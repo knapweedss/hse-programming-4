@@ -1,0 +1,11 @@
+scipy==1.7.3
+pymorphy2~=0.9.1
+nltk~=3.7
+numpy~=1.21.2
+scikit-learn~=1.1.2
+nltk==3.7
+pymorphy2==0.9.1
+
+torch~=1.11.0
+transformers~=4.22.2
+tqdm~=4.62.1
