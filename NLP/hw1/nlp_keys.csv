@@ -1,0 +1,4134 @@
+text_id,text,keywords,my_keywords
+1,"Entropy and Self-Organization in Multi-Agent Systems
+ABSTRACT
+Emergent self-organization in multi-agent systems appears to 
+contradict the second law of thermodynamics. This paradox has 
+been explained in terms of a coupling between the macro level 
+that hosts self-organization (and an apparent reduction in 
+entropy), and the micro level (where random processes greatly 
+increase entropy). Metaphorically, the micro level serves as an 
+entropy ""sink,"" permitting overall system entropy to increase 
+while sequestering this increase from the interactions where self-organization
+is desired. We make this metaphor precise by 
+constructing a simple example of pheromone-based coordination, 
+defining a way to measure the Shannon entropy at the macro 
+(agent) and micro (pheromone) levels, and exhibiting an entropy-based
+view of the coordination.
+INTRODUCTION
+Researchers who construct multi-agent systems must cope with 
+the world's natural tendency to disorder. Many applications 
+require a set of agents that are individually autonomous (in the 
+sense that each agent determines its actions based on its own state 
+and the state of the environment, without explicit external 
+command), but corporately structured. We want individual local 
+decisions to yield coherent global behavior.
+Self-organization in natural systems (e.g., human culture, insect 
+colonies) is an existence proof that individual autonomy is not 
+incompatible with global order. However, widespread human 
+experience warns us that building systems that exhibit both 
+individual autonomy and global order is not trivial.
+Not only agent researchers, but humans in general, seek to impose 
+structure and organization on the world around us. It is a universal 
+experience that the structure we desire can be achieved only 
+through hard work, and that it tends to fall apart if not tended. 
+This experience is sometimes summarized informally as 
+""Murphy's Law,"" the observation that anything that can go 
+wrong, will go wrong and at the worst possible moment. At the 
+root of the ubiquity of disorganizing tendencies is the Second Law
+of Thermodynamics, that ""energy spontaneously tends to flow 
+only from being concentrated in one place to becoming diffused 
+and spread out."" [9]
+Adding energy to a system can overcome the Second Law's 
+""spontaneous tendency"" and lead to increasing structure. 
+However, the way in which energy is added is critical. Gasoline in 
+the engines of construction equipment can construct a building 
+out of raw steel and concrete, while the same gasoline in a bomb 
+can reduce a building to a mass of raw steel and concrete.
+Agents are not immune to Murphy. The natural tendency of a 
+group of autonomous processes is to disorder, not to organization. 
+Adding information to a collection of agents can lead to increased 
+organization, but only if it is added in the right way. We will be 
+successful in engineering agent-based systems just to the degree 
+that we understand the interplay between disorder and order.
+The fundamental claim of this paper is that the relation between 
+self-organization in multi-agent systems and thermodynamic 
+concepts such as the second law is not just a loose metaphor, but 
+can provide quantitative, analytical guidelines for designing and 
+operating agent systems. We explain the link between these 
+concepts, and demonstrate by way of a simple example how they 
+can be applied in measuring the behavior of multi-agent systems. 
+Our inspiration is a model for self-organization proposed by 
+Kugler and Turvey [7], which suggests that the key to reducing 
+disorder in a multi-agent system is coupling that system to another 
+in which disorder increases. Section 2 reviews this model and 
+relates it to the problem of agent coordination. Section 3 describes 
+a test scenario that we have devised, inspired by self-organization 
+in pheromone systems, and outlines a method for measuring 
+entropy in this scenario. Section 4 reports our experimental 
+results. Section 5 summarizes our conclusions.
+
+AN ENTROPY MODEL FOR SELF-ORGANIZATION
+In the context of biomechanical systems, Kugler and Turvey [7] 
+suggest that self-organization can be reconciled with second-law 
+tendencies if a system includes multiple coupled levels of 
+dynamic activity. Purposeful, self-organizing behavior occurs at 
+the macro level. By itself, such behavior would be contrary to the 
+second law. However, the system includes a micro level whose 
+dynamics generate increasing disorder. Thus the system as a 
+whole is increasingly disordered over time. Crucially, the 
+behavior of elements at the macro level is coupled to the micro 
+level dynamics. To understand this model, we begin with an 
+example, then abstract out the underlying dynamics, and finally 
+comment on the legitimacy of identifying processes at this level 
+with principles from thermodynamics.
+
+Permission to make digital or hard copies of all or part of this work for 
+personal or classroom use is granted without fee provided that copies are 
+not made or distributed for profit or commercial advantage and that 
+copies bear this notice and the full citation on the first page. To copy 
+otherwise, or republish, to post on servers or to redistribute to lists, 
+requires prior specific permission and/or a fee. 
+AGENTS'01, May 28-June 1, 2001, Montrйal, Quebec, Canada. 
+Copyright 2001 ACM 1-58113-326-X/01/0005...$5.00.
+
+124
+2.1  An Example: Pheromones
+The parade example of such a system is the self-organization of an 
+insect colony (such as the construction of minimal spanning tree 
+networks among nests and food sources by ants, or the erection of 
+multi-storied structures with regularly spaced pillars and floors by 
+tropical termites), through pheromone-based coordination [1, 11]. 
+Pheromones are scent markers that insects use in two ways. First, 
+they deposit pheromones in the environment to record their state. 
+For example, a foraging ant just emerging from the nest in search 
+of food might deposit nest pheromone, while an ant that has found 
+food and is carrying it will deposit food pheromone. ([15] 
+documents use of multiple pheromones by insects.) Second, they 
+orient their movements to the gradient of the pheromone field. In 
+the example of foraging ants, those seeking food climb the 
+gradient of the food pheromone, while those carrying food climb 
+the gradient of the nest pheromone. The most realistic models of 
+the ants' pheromone-climbing behavior incorporates a stochastic 
+element in their movement. That is, they do not follow the 
+gradient deterministically, but use its strength to weight a roulette 
+wheel from which they determine their movement.
+The environment in which pheromones are deposited plays a 
+critical role in such a system. It is not passive, but active, and 
+performs three information-processing functions with the 
+pheromones.
+1. It
+aggregates deposits of the same flavor of pheromone from
+different ants, thus providing a form of data fusion across 
+multiple agents at different times, based on their traversal of 
+a common location.
+2. It
+evaporates pheromones over time, thus forgetting obsolete
+information. This dynamic is usefully viewed as a novel 
+approach to truth maintenance. Conventional knowledge 
+bases remember every assertion unless there is cause to 
+retract it, and execute truth maintenance processes to detect 
+and resolve the conflicts that result when inconsistent 
+assertions coexist. Insect systems forget every assertion 
+unless it is regularly reinforced.
+3.  Evaporation provides a third function, that of disseminating
+information from the location at which it was deposited to 
+nearby locations. An ant does not have to stumble across the 
+exact location at which pheromone was deposited in order to 
+access the information it represents, but can sense the 
+direction from its current location to the pheromone deposit 
+in the form of the gradient of evaporated pheromone 
+molecules.
+2.2  The Model in Detail
+In the Kugler-Turvey model, ants and their movements constitute 
+the macro level of the system, while pheromone molecules 
+constitute the micro level. The purposeful movement of ants, 
+constructing minimal paths among their nests and food sources, 
+achieve a reduction in disorder at the macro level, made possible 
+because the agents at this level are coupled to the micro level, 
+where the evaporation of pheromone molecules under Brownian 
+motion results in an overwhelming growth in disorder. As a result, 
+the disorder of the overall system increases, in keeping with the 
+Second Law, in spite of the emergence of useful order at the 
+macro level.
+Figure 1 illustrates the interplay among these processes, and how 
+this model of agent coordination differs from more classical 
+views. Classically, agents are considered to perceive one another 
+directly, reason about this perception, and then take rational 
+action. The Kugler-Turvey model views coordination as being 
+mediated by an environment that agents change by their actions 
+(e.g., depositing pheromones), a process known as ""stigmergy""  
+[4]. Processes in the environment generate structures that the 
+agents perceive, thus permitting ordered behavior at the agent 
+level. At the same time, these processes increase disorder at the 
+micro level, so that the system as a whole becomes less ordered 
+over time. 
+Research in synthetic pheromones [2, 12, 13] draws directly on 
+this model of coordination, but the model is of far broader 
+applicability. In a multi-commodity market, individual agents 
+follow economic fields generated by myriad individual 
+transactions, and self-organization in the demand and supply of a 
+particular commodity is supported by an environment that 
+distributes resources based on the other transactions in the system. 
+The movement of currency in such a system provides similar 
+functions to those of pheromones in insect systems. More broadly, 
+we hypothesize that a coupling of ordered and disordered systems 
+is ubiquitous in robust self-organizing systems, and that the lack 
+of such a coupling correlates with architectures that do not meet 
+their designers' expectations for emergent cohesiveness.
+2.3 A Caveat
+At this point, readers with a background in physics and chemistry 
+may be uneasy. These disciplines formulated the Second Law 
+within a strict context of processes that result in energy changes. 
+The fundamental physical measures associated with the second 
+law are temperature T, heat Q, and (thermodynamic) entropy S, 
+related by the definition
+Equation 1
+T
+dQ
+dS
+=
+
+Statistical mechanics identifies this macroscopic measure with the 
+number
+of microscopically defined states accessible to the
+system by the relation
+Equation 2
+S
+k ln
+where k is Boltzmann's constant, 1.4E-16 erg/deg.
+M icro
+New to n ian ; 
+F o rce  F ield ;
+E n tro p y
+F lo w
+(E n tro p y
+
+
+
+)
+F lo w
+(E n tro p y
+
+
+
+)
+M acro
+No n -New to n ian
+F lo w  F ield
+""Neg en tro p y""
+Pe
+rcep
+tio
+n
+Percep
+tion
+P h ero m o n e
+Rational Action
+(Entropy
+
+
+)
+Ra
+tio
+na
+l A
+cti
+on
+(Ent
+ropy
+
+
+)
+P h ero m o n e
+Dynam ics
+P ercep tio n
+Ratio n al A ctio n
+Ag en t 1
+Ag en t 2
+T rad itio n al  A g en t
+Dynam ics
+Key
+M icro
+New to n ian ; 
+F o rce  F ield ;
+E n tro p y
+F lo w
+(E n tro p y
+
+
+
+)
+F lo w
+(E n tro p y
+
+
+
+)
+M acro
+No n -New to n ian
+F lo w  F ield
+""Neg en tro p y""
+Pe
+rcep
+tio
+n
+Percep
+tion
+P h ero m o n e
+Rational Action
+(Entropy
+
+
+)
+Ra
+tio
+na
+l A
+cti
+on
+(Ent
+ropy
+
+
+)
+P h ero m o n e
+Dynam ics
+P ercep tio n
+Ratio n al A ctio n
+Ag en t 1
+Ag en t 2
+T rad itio n al  A g en t
+Dynam ics
+Key
+
+Figure 1. Comparison of Conventional and Pheromone-Based
+Models of Coordination
+125
+Thus defined, thermodynamic entropy has strong formal 
+similarities [10] to information entropy [14]
+Equation 3
+
+=
+i
+i
+i
+p
+p
+S
+log
+
+where i ranges over the possible states of the system and p
+i
+is the
+probability of finding the system in state i. These formal 
+similarities have led to a widespread appropriation of the notion 
+of ""entropy"" as a measure of macro-level disorder, and of the 
+Second Law as describing a tendency of systems to become more 
+chaotic. Our approach participates to this appropriation.
+It has been objected [8] that such appropriation completely 
+ignores the role of energy intrinsic to both thermodynamic 
+definitions (via T and dQ in the macro definition and k in the 
+micro definition). Such an objection implicitly assumes that 
+energy is logically prior to the definition, and that unless 
+information processes are defined in terms of energy changes, it is 
+illegitimate to identify their changes in entropy with those of 
+thermodynamics. An alternative approach to the question would 
+argue that in fact the prior concept is not ergs but bits, the 
+universe is nothing but a very large cellular automaton with very 
+small cells [3, 6], and physics and chemistry can in principle be 
+redefined in terms of information-theoretic concepts. Our 
+approach is sympathetic with this view. While we are not prepared 
+at this point to define the precise correspondence between ergs 
+and bits, we believe that physical models are an under-exploited 
+resource for understanding computational systems in general and 
+multi-agent systems in particular. The fact that the thermodynamic 
+and information approaches work in different fundamental units 
+(ergs vs. bits) is not a reason to separate them, but a pole star to 
+guide research that may ultimately bring them together.
+EXPERIMENTAL SETUP
+We experiment with these concepts using a simple model of 
+pheromone-based behavior. In this section we describe the 
+experiment and how one measures entropy over it.
+3.1  The Coordination Problem
+Consider two agents, one fixed and one mobile, who desire to be 
+together. Neither knows the location of the other. The mobile 
+agent, or walker, could travel to the destination of the stationary 
+one, if it only knew where to go. The stationary agent, or target, 
+deposits pheromone molecules at its location. As the pheromone 
+molecules diffuse through the environment, they create a gradient 
+that the walker can follow. 
+Initially, the walker is at (30,30) and the target is at (50,50) in a 
+100x100 field. Every time step, the target deposits one molecule 
+at (50,50). Both the walker and the pheromone molecules move 
+by computing an angle
+[0,2] relative to their current heading
+and taking a step of constant length (1 for the walker, 2 for the 
+pheromone molecule) in the resulting direction. Thus both 
+molecules and walkers can be located at any real-valued 
+coordinates in the field. Molecules move every cycle of the 
+simulation and the walker every five cycles, so altogether the 
+molecules move ten times as fast as the walker. Molecules fall off 
+of the field when they reach the edge, while the walker bounces 
+off the edges.
+Molecules choose the heading for their next step from a uniform 
+random distribution, and so execute an unbiased random walk. 
+The walker computes its heading from two inputs.
+1.  It generates a gradient vector
+Gr
+from its current location to
+each molecule within a specified radius
+, with magnitude
+Equation 4
+
+&lt;
+=
+
+i
+r
+i
+r
+g
+G
+2
+r
+
+where  r
+i
+is the distance between the walker and the ith
+molecule and g is a ""gravitational constant"" (currently 1).
+2.  It generates a random vector
+Rr
+with random heading and
+length equal to a temperature parameter T.
+The vector sum
+R
+G
+r
+r +
+, normalized to the walker's step length
+(1 in these experiments), defines the walker's next step. Including
+Rr
+in the computation permits us to explore the effectiveness of
+different degrees of stochasticity in the walker's movement, 
+following the example of natural pheromone systems. 
+The state of the walker defines the macro state of the system, 
+while the states of the molecules define the micro state. This 
+model can easily be enhanced in a number of directions, including 
+adding multiple walkers and multiple targets, and permitting 
+walkers and targets to deposit pheromone molecules of various 
+flavors. The simple configuration is sufficient to demonstrate our 
+techniques and their potential for understanding how the walker 
+finds the target.
+3.2 Measuring Entropy
+Computing the Shannon or Information Entropy defined in 
+Equation 3 requires that we measure  
+1.  the set of states accessible to the system and  
+2.  the probability of finding the system in each of those states.
+3.2.1  Measuring the Number of System States
+In most computational systems, the discreteness of digital 
+computation makes counting system states straightforward 
+(though the number of possible states is extremely high). We have 
+purposely defined the movement of our walker and molecules in 
+continuous space to highlight the challenge of counting discrete 
+system states in an application embedded in the physical world 
+(such as a robotic application). Our approach is to superimpose a 
+grid on the field, and define a state on the basis of the populations 
+of the cells of the grid.  
+We can define state, and thus entropy, in terms either of location 
+or direction. Location-based state is based on a single snapshot of 
+the system, while direction-based state is based on how the system 
+has changed between successive snapshots. Each approach has an 
+associated gridding technique. 
+For location-based entropy, we divide the field with a grid. Figure 
+2 shows a 2x2 grid with four cells, one spanning each quarter of 
+the field. The state of this system is a four-element vector 
+reporting the number of molecules in each cell (in the example, 
+reading row-wise from upper left, &lt;1,1,3,2&gt;. The number of 
+possible states in an nxn grid with m particles is n
+2m
+.  The
+parameters in location-based gridding are the number of divisions 
+in each direction, their orientation, and the origin of the grid.
+126
+Rectangular grids are easiest to manage computationally, but one 
+could also tile the plane with hexagons. 
+For direction-based entropy, we center a star on the previous 
+location of each particle and record the sector of the star into 
+which the particle is found at the current step. Figure 3 shows a 
+four-rayed star with a two particles. The state of the system is a 
+vector with one element for each particle in some canonical order. 
+Counting sectors clockwise from the upper left, the state of this 
+example is &lt;2,3&gt;. The number of possible states with an n-pointed
+star and m particles is mn. The parameters in direction-based
+gridding are the number of rays in the star and the rotation 
+of the star about its center. 
+In both techniques, the analysis depends critically on the 
+resolution of the grid (the parameter n) and its origin and 
+orientation (for location) or rotation (for direction). 
+To understand the dependency on n, consider two extremes. If n is 
+very large, the chance of two distributions of particles on the field 
+having the same state is vanishingly small. For N distributions,
+each will be a distinct state, each state will have equal probability 
+1/N, and the entropy will be log(N). This state of affairs is clearly 
+not informative. At the other extreme, n = 1, all distributions 
+represent the same state, which therefore occurs with probability 
+1, yielding entropy 0, again not informative. We choose the 
+gridding resolution empirically by observing the length scales 
+active in the system as it operates. 
+To understand the dependency on origin/orientation or rotation, 
+consider two particles in the same cell. After they move, will they 
+still be in the same cell (keeping entropy the same) or in different 
+cells (increasing entropy)? Exactly the same movements of the 
+two particles could yield either result, depending on how the grid 
+is registered with the field. We follow Gutowitz's technique [5] of 
+measuring the entropy with several different origins and taking the 
+minimum, thus minimizing entropy contributions resulting from 
+the discrete nature of the grid.
+3.2.2  Measuring the Probabilities
+In principle, one could compute the probability of different 
+system states analytically. This approach would be arduous even 
+for our simple system, and completely impractical for a more 
+complex system. We take a Monte Carlo approach instead. We 
+run the system repeatedly. At each step in time, we estimate the 
+probability of each observed state by counting the number of 
+replications in which that state was observed. The results reported 
+here are based on 30 replications.  
+Shannon entropy has a maximum value of log(N) for N different 
+states, achieved when each state is equally probable. To eliminate 
+this dependence on N, we normalize the entropies we report by 
+dividing by log(N) (in our case, log(30)), incidentally making the 
+choice of base of logarithms irrelevant.
+EXPERIMENTAL RESULTS
+We report the behavior of entropy first in the micro system, then 
+in the unguided and guided macro system, and finally in the 
+complete system.
+4.1  Entropy in the Micro System
+Figure 4 shows locational entropy in the micro system (the 
+pheromone molecules), computed from a 5x5 grid. Entropy 
+increases with time until it saturates at 1. The more molecules 
+enter the system and the more they disperse throughout the field, 
+the higher the entropy grows. Increasing the grid resolution has no 
+effect on the shape of this increase, but reduces the time to 
+saturation, because the molecules must spread out from a single
+(0,0)
+(100,0)
+(0,100)
+(100,100)
+(0,0)
+(100,0)
+(0,100)
+(100,100)
+
+Figure 2. Location-based gridding.
+(0,0)
+(100,0)
+(0,100)
+(100,100)
+1
+2
+(0,0)
+(100,0)
+(0,100)
+(100,100)
+1
+2
+
+Figure 3. Direction-based gridding.
+0
+50
+100
+150
+200
+250
+Time
+0.2
+0.4
+0.6
+0.8
+1
+o
+r
+c
+i
+My
+p
+o
+r
+t
+n
+E
+
+Figure 4. Micro Entropy x Time (5x5 Grid)
+127
+location and the finer the grid, the sooner they can generate a 
+large number of different states. 
+Directional entropy also increases with time to saturation. This 
+result (not plotted) can be derived analytically. The molecule 
+population increases linearly with time until molecules start 
+reaching the edge. Then the growth slows, and eventually reaches 
+0. Let M be the population of the field at equilibrium, and 
+consider all M molecules being located at (50,50) through the 
+entire run. Initially, all are stationary, and each time step one 
+additional molecule is activated. Then the total number of 
+possible system states for a 4-star is 4M, but the number actually 
+sampled during the period of linear population growth is 4t, since 
+the stationary molecules do not generate any additional states. 
+Thus the entropy during the linear phase is log(4t)/log(4M). As 
+the growth becomes sublinear, the entropy asymptotically 
+approaches 1, as with locational entropy.
+4.2  Entropy in the Unguided Macro System
+Figure 5 shows the path of a walker uncoupled to the micro 
+system (when the target is emitting no pheromone molecules). 
+With no coupling to the micro field, the walker is just a single 
+molecule executing a random walk. Figure 6 shows that locational 
+entropy for this walker increases over time, reflecting the 
+increased number of cells accessible to the walker as its random 
+walk takes it farther from its base. The grid size (15 divisions in 
+each direction) is chosen on the basis of observations of the 
+guided walker, discussed in the next section.
+The directional entropy (not plotted) is constant at 1, since the 
+walker chooses randomly at each step from all available 
+directions.
+4.3  Entropy in Guided Macro System
+Now we provide the walker with a micro field by emitting 
+pheromone molecules from the target. Figure 7 shows the path 
+followed by a typical walker with radius
+= 20 and T = 0. This
+path has three distinct parts. 
+Ј  Initially, the walker wanders randomly around its origin at
+(30,30), until the wavefront of molecules diffusing from 
+(50,50) encounters its radius. In this region, the walker has 
+no guidance, because no molecules are visible.
+Ј  Once the walker begins to sense molecules, it moves rather
+directly from the vicinity of (30,30) to (50,50), following the 
+pheromone gradient.
+Ј  When it arrives at (50,50), it again receives no guidance from
+the molecules, because they are distributed equally in all 
+directions. So it again meanders.
+The clouds of wandering near the start and finish have diameters 
+in the range of 5 to 10, suggesting a natural grid between 20x20 
+and 10x10. We report here experiments with a 15x15 grid. 
+Because of their initial random walk around their origin, walkers 
+in different runs will be at different locations when they start to 
+move, and will follow slightly different paths to the target (Figure 
+8).
+30
+35
+40
+45
+50
+55
+x
+30
+35
+40
+45
+50
+55
+y
+
+Figure 5. Unguided Walker Path. Axes are location in the
+(100x100) field.
+0
+50
+100
+150
+200
+250
+Time
+0.2
+0.4
+0.6
+0.8
+1
+o
+r
+c
+a
+My
+p
+o
+r
+t
+n
+E
+
+Figure 6. Unguided Walker Locational Entropy (15x15 Grid)
+30
+35
+40
+45
+50
+55
+x
+30
+35
+40
+45
+50
+55
+y
+
+Figure 7. Guided Walker Path (
+= 20, T = 0)
+30
+35
+40
+45
+50
+55
+x
+30
+35
+40
+45
+50
+55
+y
+
+Figure 8. Ensemble of Guided Walkers (
+= 20, T = 0)
+128
+The dots in Figure 9 and Figure 10 show the directional and 
+locational entropies across this ensemble of guided walkers as a 
+function of time. The solid line in each case plots the normalized 
+median distance from the walkers to the target (actual maximum 
+28), while the dashed line plots the normalized median number of 
+molecules visible to the walkers (actual maximum 151). The lines 
+show how changes in entropy and reduction in distance to the 
+target are correlated with the number of molecules that the walker 
+senses at any given moment. 
+At the beginning and end of the run, when the walkers are 
+wandering without guidance, directional entropy is 1, 
+corresponding to a random walk. During the middle portion of the 
+run, when the walker is receiving useful guidance from the micro 
+level, the entropy drops dramatically. As the temperature 
+parameter T is increased in the range 50 to 100, the bottom of the 
+entropy well rises, but the overall shape remains the same (plot 
+not shown). 
+The locational entropy presents a different story. The 
+minimization method for avoiding discreteness artifacts has the 
+effect of selecting at each time step the offset that best centers the 
+cells on the walkers. At the beginning of the run and again at the 
+end, most walkers are close together, and fall within the same cell 
+(because we chose a cell size comparable to these clouds). 
+Walkers leave the starting cloud at different times, since those 
+closer to the target sense the pheromones sooner, and follow
+different paths, depending on where they were when the 
+pheromone reached them. Thus they spread out during this 
+movement phase, and cluster together again once they reach the 
+target. The effect of raising T to 100 on locational entropy is that 
+the right end of the curve rises until the curve assumes a similar 
+shape (plot not shown) to Figure 6. 
+Comparison of Figure 6 and Figure 10 shows that though the 
+directed portion of the walker's movement has higher entropy 
+than the undirected portions, coupling the walker to the micro 
+level does reduce the walker's overall entropy. Even at its 
+maximum, the entropy of the guided walker is much lower than 
+that of the random one, demonstrating the basic dynamics of the 
+Kugler-Turvey model. 
+The different behavior of locational and directional entropy is 
+instructive. Which is more orderly: a randomly moving walker, or 
+one guided by pheromones? The expected location of a random 
+walker is stationary (though with a non-zero variance), while that 
+of a guided walker is non-stationary. In terms of location, the 
+random walker is thus more regular, and the location entropy 
+reflects this. However, the movement of the guided walker is more 
+orderly than that of the random walker, and this difference is 
+reflected in the directional entropy. This difference highlights the 
+importance of paying attention to dynamical aspects of agent 
+behavior. Our intuition that the guided walker is more orderly 
+than the random one is really an intuition about the movement of 
+this walker, not its location.
+4.4  Entropy in the Overall System
+Central to the Kugler-Turvey model is the assertion that entropy 
+increase at the micro level is sufficient to ensure entropy increase 
+in the overall system even in the presence of self-organization and 
+concomitant entropy reduction at the micro level. Our experiment 
+illustrates this dynamic. As illustrated in Figure 4, by time 60, 
+normalized entropy in the micro system has reached the maximum 
+level of 1, indicating that each of the 30 replications of the 
+experiment results in a distinct state. If each replication is already 
+distinct on the basis of the locations of the pheromone molecules 
+alone, adding additional state elements (such as the location of the 
+walker) cannot cause two replications to become the same. Thus 
+by time 60 the normalized entropy of the entire system must also 
+be at a maximum. In particular, decreases in macro entropy, such 
+as the decrease in locational entropy from time 80 on seen in 
+Figure 10, do not reduce the entropy of the overall system. 
+One may ask whether the reduction in macro (walker) entropy is 
+causally related to the increase in micro entropy, or just 
+coincidental. After all, a static gradient of pheromone molecules 
+would guide the walker to the target just as effectively, but would 
+be identical in every run, and so exhibit zero entropy. This 
+argument neglects whatever process generates the static gradient 
+in the first place. An intelligent observer could produce the 
+gradient, but then the behavior of the system would hardly be 
+""self-organizing."" In our scenario, the gradient emerges as a 
+natural consequence of a completely random process, the random 
+walk of the pheromone molecules emerging from the target. The 
+gradient can then reduce the entropy of a walker at the macro 
+level, but the price paid for this entropy reduction is the increase 
+in entropy generated by the random process that produces and 
+maintains the gradient.
+0
+10
+20
+30
+40
+50
+Time
+0.2
+0.4
+0.6
+0.8
+1
+y
+p
+o
+r
+t
+n
+E
+e
+c
+n
+a
+t
+s
+i
+Dd
+n
+as
+e
+l
+u
+c
+e
+l
+o
+M
+
+Figure 9. Guided walker: dots = directional entropy (4 star),
+solid line = median distance to target (max 28), dashed line =
+median visible molecules (max 151).
+0
+50
+100
+150
+200
+250
+Time
+0.2
+0.4
+0.6
+0.8
+1
+o
+r
+c
+a
+My
+p
+o
+r
+t
+n
+E
+e
+c
+n
+a
+t
+s
+i
+Dd
+n
+as
+e
+l
+u
+c
+e
+l
+o
+M
+
+Figure 10. Guided walker: dots = locational entropy (15x15
+grid), solid line = median distance to target (max 28), dashed
+line = median visible molecules (max 151).
+129
+One may also ask whether our hypothesis requires a quantitative 
+relation between entropy loss at the macro level and entropy gain 
+at the micro level. A strict entropy balance is not required; the 
+micro level might generate more entropy than the macro level 
+loses. In operational terms, the system may have a greater capacity 
+for coordination than a particular instantiation exploits. What is 
+required is that the entropy increase at the micro level be 
+sufficient to cover the decrease at the macro level, and this we 
+have shown.
+
+SUMMARY
+To be effective, multi-agent systems must yield coordinated 
+behavior from individually autonomous actions. Concepts from 
+thermodynamics (in particular, the Second Law and entropy) have 
+been invoked metaphorically to explain the conditions under 
+which coordination can emerge. Our work makes this metaphor 
+more concrete and derives several important insights from it. 
+Ј  This metaphor can be made quantitative, through simple state
+partitioning methods and Monte Carlo simulation.
+Ј  These methods show how coordination can arise through
+coupling the macro level (in which we desire agent self-organization
+with a concomitant decrease in entropy) to an 
+entropy-increasing process at a micro level (e.g., pheromone 
+evaporation). Our demonstration focuses on synthetic 
+pheromones for the sake of expositional simplicity, but we 
+believe that the same approach would be fruitful for 
+understanding self-organization with other mechanisms of 
+agent coordination, such as market systems.
+Ј  This confirmation of the Kugler-Turvey model encourages us
+as agent designers to think explicitly in terms of macro and 
+micro levels, with agent behaviors at the macro level coupled 
+in both directions (causally and perceptually) to entropy-increasing
+processes at the micro level.
+Ј  Some form of pheromone or currency is a convenient
+mechanism for creating such an entropy-increasing process.
+Ј  Researchers must distinguish between static and dynamic
+order in a multi-agent system. We have exhibited a system 
+that appears intuitively to be self-organizing, and shown that 
+the measure of order underlying this intuition is dynamic 
+rather than static.
+ACKNOWLEDGMENTS
+This work is supported in part by the DARPA JFACC program 
+under contract F30602-99-C-0202 to ERIM CEC. The views and 
+conclusions in this document are those of the authors and should 
+not be interpreted as representing the official policies, either 
+expressed or implied, of the Defense Advanced Research Projects 
+Agency or the US Government.
+
+REFERENCES
+[1]  E. Bonabeau, M. Dorigo, and G. Theraulaz. Swarm
+Intelligence: From Natural to Artificial Systems. New York, 
+Oxford University Press, 1999.
+[2] S. Brueckner. Return from the Ant: Synthetic Ecosystems for
+Manufacturing Control. Thesis at Humboldt University 
+Berlin, Department of Computer Science, 2000.
+[3]  E. Fredkin. Finite Nature. In Proceedings of The XXVIIth
+Recontre de Moriond, 1992.
+[4]  P.-P. Grassй. La Reconstruction du nid et les Coordinations
+Inter-Individuelles chez Bellicositermes Natalensis et 
+Cubitermes sp. La thйorie de la Stigmergie: Essai 
+d'interprйtation du Comportement des Termites Constructeurs. 
+Insectes Sociaux, 6:41-80, 1959.
+[5]  H. A. Gutowitz. Complexity-Seeking Ants. In Proceedings of
+Third European Conference on Artifical Life, 1993.
+[6]  B. Hayes. Computational Creationism. American Scientist,
+87(5):392-396, 1999.
+[7]  P. N. Kugler and M. T. Turvey. Information, Natural Law,
+and the Self-Assembly of Rhythmic Movement. Lawrence 
+Erlbaum, 1987.
+[8]  F. L. Lambert. Shuffled Cards, Messy Desks, and Disorderly
+Dorm Rooms - Examples of Entropy Increase? Nonsense! 
+Journal of Chemical Education, 76:1385, 1999.
+[9]  F. L. Lambert. The Second Law of Thermodynamics. 2000.
+Web Page, http://www.secondlaw.com/.
+[10]  J. Lukkarinen. Re: continuing on Entropy. 2000. Email
+Archive, http://necsi.org:8100/Lists/complex-science/Message/2236
+.html.
+[11]   V. D. Parunak. 'Go to the Ant': Engineering Principles
+from Natural Agent Systems. Annals of Operations Research, 
+75:69-101, 1997.
+[12]   V. D. Parunak and S. Brueckner. Ant-Like Missionaries and
+Cannibals: Synthetic Pheromones for Distributed Motion 
+Control. In Proceedings of Fourth International Conference 
+on Autonomous Agents (Agents 2000), pages 467-474, 2000.
+[13]   Peeters, P. Valckenaers, J. Wyns, and S. Brueckner.
+Manufacturing Control Algorithm and Architecture. In 
+Proceedings of Second International Workshop on Intelligent 
+Manufacturing Systems, pages 877-888, K.U. Leuven, 1999.
+[14]   E. Shannon and W. Weaver. The Mathematical Theory of
+Communication. Urbana, IL, University of Illinois, 1949.
+[15]  ithsonian Institution. Encyclopedia Smithsonian:
+Pheromones in Insects. 1999. Web Page, 
+http://www.si.edu/resource/faq/nmnh/buginfo/pheromones.ht
+m.
+
+
+
+130
+","self-organization, pheromones, entropy","multi-agent systems, self-organization, pheromones, entropy, murphy "
+2,"Diagnosis of TCP Overlay Connection Failures using Bayesian Networks
+ABSTRACT
+When failures occur in Internet overlay connections today, it is difficult
+for users to determine the root cause of failure. An overlay
+connection may require TCP connections between a series of overlay
+nodes to succeed, but accurately determining which of these
+connections has failed is difficult for users without access to the
+internal workings of the overlay. Diagnosis using active probing
+is costly and may be inaccurate if probe packets are filtered or
+blocked. To address this problem, we develop a passive diagnosis
+approach that infers the most likely cause of failure using a
+Bayesian network modeling the conditional probability of TCP failures
+given the IP addresses of the hosts along the overlay path. We
+collect TCP failure data for 28.3 million TCP connections using
+data from the new Planetseer overlay monitoring system and train
+a Bayesian network for the diagnosis of overlay connection failures
+. We evaluate the accuracy of diagnosis using this Bayesian
+network on a set of overlay connections generated from observations
+of CoDeeN traffic patterns and find that our approach can
+accurately diagnose failures.
+INTRODUCTION
+When failures occur in Internet overlay connections today, it is
+difficult for users to determine the root cause of failure. The proliferation
+of TCP overlays such as content distribution networks
+and HTTP proxies means that frequently network communication
+requires a series of TCP connections between overlay nodes to succeed
+. For example, an HTTP request using the CoDeeN[9] content
+distribution network first requires a TCP connection to a CoDeeN
+node and then a connection from a CoDeeN node to a server or another
+CoDeeN node. A failure in any one of the TCP connections
+along the overlay path causes the user's HTTP request to fail. If
+the user knows which TCP connection failed, then they can take
+appropriate action to repair or circumvent the failure. For instance,
+Permission to make digital or hard copies of all or part of this work for
+personal or classroom use is granted without fee provided that copies are
+not made or distributed for profit or commercial advantage and that copies
+bear this notice and the full citation on the first page. To copy otherwise, to
+republish, to post on servers or to redistribute to lists, requires prior specific
+permission and/or a fee.
+SIGCOMM'06 Workshops September 11-15, 2006, Pisa, Italy.
+Copyright 2006 ACM 1-59593-417-0/06/0009 ...
+$
+5.00.
+if they know that the connection from the proxy to the server failed,
+then they complain to the web server administrator. On the other
+hand, if the user/proxy connection fails, perhaps they can try connecting
+to the proxy using a different ISP. If multiple overlay paths
+exist between the source and destination, nodes and applications
+may also use this type of diagnostic information to automatically
+recover or route around failures[1].
+Unfortunately, accurately determining which TCP connection in
+an overlay connection has failed is difficult for end users, who typically
+do not have access to the internal workings of the overlay.
+Commercial overlay networks such as Akamai typically do not reveal
+details of connection failures to users, and the diagnostic tools
+available to users today are frequently inadequate. Active probing
+techniques such as tulip[7] and Planetseer[11] frequently cannot
+provide accurate information due to firewalls and packet filtering.
+Furthermore, active probing can be costly both in terms of network
+resources and time, and cannot diagnose the many transient TCP
+failures that begin and end before one can complete a probe[11].
+Additionally, one must take care when using active probing for diagnosis
+because they may concentrate network traffic at points of
+failure and trigger intrusion detection systems.
+Instead, in our research we consider a passive approach to diagnosis
+in which intelligent diagnostic agents use probabilistic inference
+to determine the root cause of failure. The reliability of IP
+links in the Internet varies widely and hence we expect the probability
+of TCP failure to differ between different sets of hosts. Diagnostic
+agents in the Internet learn the probability of such failures
+for different regions in the Internet based on observations of TCP
+traffic. When users or network administrators detect network failures
+, they request diagnosis from such diagnostic agents. Agents
+then use information about the relative probability of failure of the
+TCP connections that make up an overlay connection to identify
+the most likely cause of failure when an overlay connection occurs
+without conducting any additional probes. In addition, diagnostic
+agents can also use this Bayesian network to predict the probability
+of overlay and TCP connection failure given information about the
+path of an overlay connection.
+We collect data on TCP failure probabilities in order to determine
+whether this data enables diagnostic agents data to accurately
+diagnose overlay failures in the Internet. To learn the probability
+of failure for TCP connections between different points in the network
+, we observe TCP traffic on the content distribution network
+CoDeeN using an updated version of Planetseer[11]. Next we construct
+a Bayesian network for diagnosis using these probabilities.
+We then use Bayesian inference to infer the most probable cause of
+failure for TCP-based applications.
+To evaluate the effectiveness of this approach, we test this Bayesian
+network on an artificial set of overlay connections based on the
+305
+traffic observed on CoDeeN. We find that when a failure occurs,
+knowing only the AS numbers of the source, proxy, and destination
+, we can determine which TCP connection has failed with over
+80% probability. In addition, the probability of failure between
+ASes stays relatively constant over time, and data learned can be
+accurately used for diagnosis for many hours into the future. This
+suggests that the TCP failure probabilities we learn may be useful
+in the diagnosis of future failures as well.
+The contribution of this research is to show how inter-AS TCP
+failure probabilities can be used for probabilistic diagnosis of failures
+in overlay networks such as CoDeeN using Bayesian inference
+. We also demonstrate a variety of clustering methods to address
+the problem of dataset sparsity for learning TCP failure probabilities
+. In this paper we evaluate our system on CoDeeN overlay
+connections, but our Bayesian model generalizes to the diagnosis
+of other TCP-based applications as well.
+RELATED WORK
+There has been previous work in passive diagnosis of failures
+in the Internet. Padmanabhan, Ramabhadran, and Padhye developed
+Netprofiler, which collects network measurements from a set
+of end hosts and attempts to identify cause of failure by examining
+the shared dependencies among hosts that experience failures[8].
+They show that this approach can provide information useful for
+diagnosis, but their paper only provides some preliminary results
+and do not provide details of how their system might diagnose real-world
+failures in practice.
+Shrink probabilistically diagnoses IP link failures based on the
+observed status of IP links that share resources[4]. Similarly in our
+work we diagnose failures in overlay connections where an overlay
+depends on several underlying TCP connections which may share
+IP hops. Shrink assumes that one can accurately determine the status
+of all IP links at any point in time. This allows one to identify
+the shared cause of failure of the failed IP links. Theoretically, we
+can also use this approach to diagnose overlay failures. That is, we
+can identify the TCP connections that share common IP hops and
+observe which overlay connections have failed at any point in time
+to identify the failed TCP connections.
+Unfortunately, in real-world diagnosis of TCP connections many
+of the assumptions made by systems such as Shrink do not hold for
+the following reasons.
+1. The status of overlay connections may change rapidly, making
+it difficult to correlate failures in different overlay connections
+over time.
+2. In order to construct a Bayesian network that accurately models
+the IP hops shared among different TCP connections we
+need an accurate IP level map of the Internet. As the Skitter
+1
+project demonstrates, accurately constructing such a map is
+difficult because routes may change and frequently tools such
+as traceroute do not provide accurate information.
+3. Determining the status of an inactive overlay connection or a
+TCP connection is costly and takes time because it requires
+an active probe such as a ping, traceroute, or HTTP connection
+. Furthermore such probes are frequently inaccurate because
+of the prevalence of packet filtering, network address
+translation (NAT), and firewalls in the Internet[3].
+4. TCP and IP failures are frequently so transient that by the
+time one can test the status of a link, the failure no longer
+exists [11].
+1
+http://www.caida.org/tools/measurement/skitter/
+Therefore in this paper we present an alternative passive diagnosis
+approach that does not require simultaneously knowing the
+status of all overlay connections. Instead, we cluster TCP failures
+based on the Internet autonomous systems (ASes) of their endpoints
+and use information about the distribution of TCP failures
+to infer the cause of failure. An agent first learns a probabilistic
+model of failures based on a training set of observed TCP connections
+, and then it uses this model to diagnose future failures when
+it does not know the connection status.
+Other researchers have developed methods for diagnosing specific
+TCP-based applications. Ward, et al. infer the presence of
+TCP performance failures based on the rate of requests processed at
+an HTTP proxy server and TCP connection state [10]. Unlike such
+specialized diagnostic systems, our Bayesian approach to diagnosis
+can generalize to other applications that rely on TCP connections.
+Most previous research in probabilistic diagnosis of Internet failures
+evaluate their work on simulated failures. Steinder and Sethi
+model network faults using a bipartite causality graph in which the
+failure of individual links cause the failure of end-to-end connec-tivity
+, and then perform fault localization using a belief network[6].
+In contrast, in our research we evaluate our approach on real-world
+TCP failures using actual data collected on the Internet.
+DIAGNOSING OVERLAY CONNECTION FAILURES
+In this paper we consider the diagnosis of overlay networks in
+which an overlay network connection requires a series of TCP connections
+between overlay nodes between the source and destination
+hosts. For example, Akamai is a content distribution network
+in which retrieving a resource from a web server may requ ire
+communication among multiple Akamai nodes along multiple TCP
+connections. Another example is the content distribution network
+CoDeeN on Planetlab, in which overlay nodes act as HTTP proxies
+. An request on CoDeeN[9] first requires a TCP connection to a
+CoDeeN node and then a connection from a CoDeeN node to server
+or another CoDeeN node. A failure in any one of these TCP connections
+causes the user's HTTP connection to fail. The challenge
+is to determine which of these TCP connections has failed.
+Sometimes users can determine whether a failure has occurred
+along the first TCP connection along the overlay path using information
+provided by their local TCP stack, but if a failure occurs
+beyond the first connection users cannot tell where a failure occurs
+without cooperation from the overlay. Depending on the type of
+overlay, users may have different amounts of information about the
+overlay path. For example, in an HTTP proxy connection, users
+know that the proxy is the first hop along the path and that if the
+connection is not cached, the web server is the last hop along the
+path.
+As a first step, in our research we examine a special case of diagnosis
+in order to gain insight into how well our approach might
+generalize to other types of diagnosis. The question we wish to answer
+is, if a two hop overlay connection fails due to a TCP failure,
+which TCP connection failed? In this paper we define a TCP failure
+as three consecutive TCP retransmits without a response. We
+assume that the diagnostic agent only knows that the overlay connection
+has failed and does not know which of the TCP connections
+has failed. We want to answer this question knowing only the IP addresses
+of the source, IP address of the first hop overlay node, and
+the IP address of the ultimate overlay destination host. Our model
+for probabilistic diagnosis generalizes to overlay connections with
+any number of hops, but as a starting point in this paper we only
+consider overlay connections with two hops.
+306
+TCP Conn.
+B
+
+C
+Hour
+Dst
+AS
+Src
+AS
+Overlay Conn.
+A
+
+C
+TCP Conn.
+A
+
+B
+Hour
+Dst
+AS
+Src
+AS
+0
+Failed
+OK
+1
+OK
+OK
+0
+OK
+Failed
+Failed
+B
+°
+C
+0
+Failed
+P(Status
+=OK)
+A
+°
+B
+...
+1
+1
+Hour
+...
+...
+...
+0.87
+2
+1
+1
+Dst 
+AS
+0.99
+1
+P(Status
+=OK)
+Src 
+AS
+Figure 1: A Bayesian network for TCP overlay path diagnosis
+3.1
+Probabilistic Diagnosis
+The reliability of IP links in the Internet varies widely and hence
+we expect the probability of TCP failure to differ between different
+sets of hosts. Thus if we have knowledge of the relative probability
+of failure of the TCP connections that make up an overlay connection
+, we can then infer the most likely cause of failure when
+an overlay connection occurs without conducting any additional
+probes. In this paper we show we can use Bayesian networks both
+to learn a model of TCP failures and to perform diagnosis.
+Bayesian networks compactly represent the conditional probability
+of related events and enable efficient inference based on available
+evidence[5]. A Bayesian network is a directed acyclic graph
+in which nodes represent variables, and edges from parent nodes to
+children nodes represent dependence relations. Each node X has a
+conditional probability table (CPT) P
+(X|parents(X)) that encodes
+the conditional probability of X given evidence about its parents.
+Bayesian networks have several important features that make
+them especially suitable for reasoning about failures in the Internet
+. Firstly, Bayesian networks can model both deterministic and
+probabilistic dependencies among many types of Internet components
+and diagnostic tests. For example, an HTTP proxy connection
+functions if and only if the user/proxy TCP connection functions
+and the proxy/provider TCP connection functions. The probability
+that a TCP connection functions depends on the source and
+destination IP addresses and the time of the connection. To improve
+accuracy, we cluster IP addresses by AS and connection time
+by hour (see section 3.2). Figure 1 illustrates a Bayesian network
+that encodes the conditional probabilities for diagnosing an overlay
+connection from A to B to C. To diagnose an overlay connection
+failure from A to C, one can use this Bayesian network to infer the
+most probable status of the underlying TCP connections from A to
+B and B to C given information about the AS numbers and hour the
+connections were made.
+The variables in the Bayesian network represent the functional
+status of TCP connections and overlay connections. A node in
+this Bayesian network represents the functional status of a connection
+: OK if functioning, Failed if malfunctioning. Malfunctioning
+means that a connection failure occurs along the path, functioning
+means that no connection failure occurs. Edges in the Bayesian network
+represent dependencies among connections. The CPT for an
+overlay connection node represents the probability that it is functioning
+given the status of its underlying TCP paths. The CPT for
+a TCP path represents the probability that the TCP path functions
+given information about the path. In our Bayesian network we assume
+that the conditional probability of a TCP connection failure
+depends only on the source and destination IP addresses and the
+time of failure for each hop of the overlay, and not on which hop
+of the overlay connection it is (user/proxy or proxy/server). We
+represent this by using parameter tying in this Bayesian network
+so that both TCP paths share the same CPT. We also assume that a
+diagnostic agent can identify the intermediate hops in the overlay
+connection, either through active probing or because it has knowledge
+of the overlay topology.
+An advantage of modeling network components in terms of Bayesian
+networks is that a Bayesian network provides an abstract high-level
+representation for diagnostic data suitable for reasoning. Representing
+diagnostic data in terms of variables, evidence, and dependencies
+rather than passing around low-level measurements such as
+packet traces allows an agent to reason about the causes and consequences
+of failures without any deep knowledge of the behavior
+and characteristics of components and diagnostic tests. In addition,
+the conditional independence assumptions of Bayesian inference
+reduce the amount of data a diagnostic agent needs to consider for
+diagnosis.
+3.2
+Clustering
+To perform diagnosis using this Bayesian network, we need to
+learn the conditional probability of failure of a TCP connection
+given the properties of a connection. Learning the conditional probability
+of failure for each pair of IP addresses is impractical because
+it is infeasible to store the probability of failure for the 2
+64
+combinations
+of source and destination IP addresses. More importantly,
+for each pair of IP addresses we only have a limited amount of data
+with which to train the Bayesian network. For more effective diagnosis
+, diagnostic agents need a way to diagnose failures involving
+IP addresses it has not previously observed.
+Therefore to reduce the size of the conditional probability tables
+and to improve the accuracy of the learned probabilities, we
+cluster together IP addresses in a way that facilitates learning and
+diagnosis. Our hypothesis is that TCP connections that share many
+IP links with one another will have similar probabilities of failure
+. Thus two TCP connections with topologically nearby sources
+and nearby destinations will likely have similar failure probabilities
+. Therefore we clustered source and destination IP addresses in
+three ways: by the first eight bits of the IP address, the AS number,
+and by country.
+We also cluster TCP connections based on time. We hypothesize
+that the probability of failure changes over multiple time scales.
+For instance, if an IP routing change occurs, the probability of failure
+for affected TCP connections may change from low to high and
+back to low within a few minutes. On the other hand, the average
+rate of routing failure over several days may remain relatively
+constant. We show how different methods for clustering affect the
+accuracy of diagnosis in section 5.
+COLLECTING TCP FAILURE DATA
+It is difficult to obtain accurate information about the distribution
+of TCP failures in the Internet because failed connections make
+up only a small percentage of overall TCP traffic and the number
+307
+of possible source and destination IP addresses is enormous. To
+collect accurate failure probabilities, we need a way to observe the
+status of large quantities of TCP connections from many different
+source and destination hosts.
+In order to obtain such data, we used an updated version of Planetseer
+to collect data on TCP connection failures. The new Planetseer
+monitors TCP connections in the CoDeeN content distribution
+network and provides notifications when TCP sessions begin, end,
+and when TCP failures occur. Planetseer runs on over 320 Planetlab
+[2] nodes distributed around the world. We used Planetseer to
+monitor all the TCP connections made by 196 CoDeeN nodes. We
+observed 28.3 million TCP connections and 249,000 TCP failures
+over a ten hour period. We observed TCP connections to approximately
+17,000 distinct IP addresses per hour on average. In our
+dataset, we observed TCP connections to hosts in 2116 unique Internet
+autonomous systems.
+CoDeeN overlay nodes act as HTTP proxies and establish TCP
+connections with web clients, web servers, and other CoDeeN nodes.
+In a typical CoDeeN session, a user initiates a TCP connection with
+the CoDeeN proxy, the proxy connects to a web server and retrieves
+the requested resource, and finally the proxy sends the requested
+data back to the user. Note that many requests are cached, and so
+the destination of the second hop in the overlay is a CoDeeN node
+and not the web server specified in the HTTP request. We found
+that 0.28% of user/proxy connections and 0.65% of proxy/server
+connections experienced TCP failures. Since Planetseer monitors
+TCP connections from the vantage point of the proxy, we cannot
+detect those TCP failures in which a user is unable to establish a
+TCP connection to the proxy. Therefore the lower percentage of
+user/proxy failures may be partly explained by the fact that all failures
+between the proxy and user occur after the user successfully
+establishes a TCP connection to the proxy.
+We believe that the failure probabilities learned through Planetseer
+are representative of typical TCP connections in the Internet
+. CoDeeN nodes operate as HTTP proxies, so the pattern of
+TCP connections resembles typical web traffic. Though caching at
+CoDeeN nodes reduces the number of connections to web servers
+we observe, we believe that the average failure probability to web
+servers we observe using Planetseer reflects typical failure rates for
+HTTP related TCP connections. We are currently examining other
+types of overlay connections to determine how well this TCP data
+generalizes for the diagnosis of other overlays.
+We learn the conditional probability table for TCP connection
+failure using the data collected from Planetseer. We cluster source
+and destination IP addresses by AS using the Oregon Route Views
+BGP tables
+2
+.
+EVALUATION
+Our hypothesis is that Bayesian inference using the conditional
+probability of failure for TCP connections given the AS numbers of
+the source and destination can accurately diagnose failures in overlay
+connections. In order to test this hypothesis, we constructed a
+Bayesian network using the probabilities learned from Planetseer
+and used it to diagnose failures in CoDeeN connections.
+We wanted to answer the following questions in our experiments:
+1. Which clustering method produces the most accurate diagnosis
+: AS, IP/8 prefix, or country? We expect that clustering
+based on AS will produce the most accurate results since it
+is most closely correlated with the Internet routing topology.
+2
+http://www.routeviews.org/
+2. How does diagnostic accuracy change as we increase the
+time interval over which we cluster TCP connections? We
+expect that as the clustering interval increases, accuracy will
+increase at first, but then decrease as the learned probabilities
+less accurately reflect the probabilities of new failures.
+3. How does the age of the training set affect diagnostic accuracy
+? We expect that as the distribution of TCP failures in
+the Internet changes over time, diagnostic accuracy will also
+decrease.
+5.1
+Experimental Setup
+We train a Bayesian network using the Bayes Net Toolbox (BNT)
+for Matlab
+3
+. In order to diagnose TCP connections between regions
+we did not observe in the training set, we initialize the prior probabilities
+of failure according to a uniform Dirichlet distribution,
+which is equivalent to adding an additional element to the training
+set for each combination of source cluster, destination cluster,
+and connection status. We test this Bayesian network on an artificial
+dataset generated based on the distribution of TCP connections
+observed on Planetseer. Since Planetseer does not provide information
+about which TCP connections are associated with each
+CoDeeN request, we construct a dataset based on the TCP connections
+we observed. First we identify user/proxy, proxy/proxy,
+and proxy/server connections based on IP address and port number
+. Then for each proxy, we count the number of TCP connections
+to each server and to each proxy. We assume that the number
+of cached requests equals the number of user/proxy connections
+minus the number of proxy/server and proxy/proxy connections
+. We assign each user/proxy TCP connection a corresponding
+proxy/provider connection, where the provider may either be a web
+server (if the resource is not cached), another proxy (if the resource
+is cached at another proxy), or the same proxy (if the resource is
+cached locally). We make these provider assignments according to
+the observed distribution of proxy/server and proxy/proxy connections
+. Of the 19,700 failures in this dataset, approximately 82%
+of requests are cached locally, 7.9% are cached at other CoDeeN
+nodes, and 10.6% are uncached.
+For each CoDeeN request failure our Bayesian network makes
+two diagnoses: one for the status of the user/proxy connection, and
+one for the status of the proxy/provider connection. We measure
+accuracy in terms of the fraction of correct diagnoses. To evaluate
+the accuracy of diagnosis, we compute the most probable explanation
+for a TCP failure given evidence that the overlay connection
+has failed and the AS numbers of the source, proxy, and destination
+, and then compare this diagnosis with the actual status of the
+source/proxy and proxy/provider connections. In our experiments
+we perform diagnosis without evidence about whether a resource is
+cached at a proxy.
+Of the CoDeeN requests that failed in the first hour of our dataset,
+we found that 62% failed at the user/proxy connection, 31% failed
+at the proxy/server connection, and 7% failed at a the proxy/proxy
+connection. Therefore knowing only the overall distribution of
+TCP failures between users and servers, without using information
+about the IP addresses of the user, proxy, and server, one could diagnose
+failures with 62% accuracy by diagnosing every failure as
+a user/proxy failure. In our experiments we wish to determine if
+our Bayesian approach to diagnosis can achieve significantly better
+accuracy.
+In order to properly compute the accuracy of diagnosis, we sepa-rated
+the set of TCP connections with which we trained the Bayesian
+network from the set of TCP connections associated with the failed
+3
+http://www.cs.ubc.ca/ murphyk/Software/BNT
+308
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+AS
+Country
+IP
+Baseline
+Accuracy
+Figure 2: Clustering Method Comparison
+75%
+76%
+77%
+78%
+79%
+80%
+81%
+82%
+83%
+1
+2
+3
+4
+5
+6
+7
+8
+9
+Training Interval Length (hours)
+Accuracy
+Figure 3: Accuracy vs. Training Interval Length
+overlay connections under diagnosis. We collected ten hours of
+TCP connection data from Planetseer. In our initial experiments
+we choose to learn the average probability of failure over one hour
+because we find that clustering over shorter time scales does not
+provide enough data for accurate diagnosis.
+5.2
+Experimental Results
+First we compare the accuracy of three IP clustering methods:
+by Internet autonomous system number (AS), by the first eight bits
+of the IP address (IP), and by the country in which a host resides
+(Country). We determine the country of a host using the hostip.info
+database
+4
+, which maps the first 24 bits of an IP address to a country
+using location information contributed by Internet users. We
+train three Bayesian networks corresponding to the three clustering
+methods using data from hour 1. Then we test these Bayesian
+networks on the proxy connection failures constructed using data
+from hours 2≠10 and averaged the results. We use a junction tree
+inference engine to compute the most likely status for each TCP
+connection and compare the inferred status with the actual status
+from the data. Since the Bayesian network we use for inference
+has no cycles, we can perform Bayesian learning and junction tree
+inference rapidly; in our experiments, inference for a single connection
+requires approximately 5 ms.
+4
+http://www.hostip.info/
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+100%
+1
+2
+3
+4
+5
+6
+7
+8
+9
+Training Set Age (hours)
+Accuracy
+Figure 4: Accuracy vs. Training Set Age
+Figure 2 compares the diagnostic accuracy of these three clustering
+approaches. We define accuracy as the fraction of correct
+status inferences. As a baseline, we also plot the accuracy of simply
+guessing that every failure is due to a user/proxy connection
+failure. Figure 2 shows that all three clustering methods provide
+similar degrees of accuracy. Our hypothesis was that clustering
+based on AS would produce the most accurate results, but our experiments
+show that clustering based on the first 8 bits of the IP
+address yields higher accuracy for short time intervals. This may
+be because one hour is not enough time to accurately learn inter-AS
+TCP failure probabilities, or due to inaccuracies in the Route Views
+BGP table.
+Next we computed the accuracy of diagnosis as we increase the
+time interval over which we cluster TCP connections. If the interval
+over which we train is too short, then we will not have enough data
+to accurately learn failure probabilities. If the interval is too long,
+then it may not accurately reflect changing network conditions. We
+train a Bayesian network using AS clustering on x hours before
+hour 10 for values of x from 1 to 9. We then test each Bayesian
+network on the data from hour 10. Figure 3 shows how accuracy
+changes as the training time interval changes. This plot shows that
+accuracy increases as the clustering time interval increases, suggesting
+that the training value of incorporating additional data outweighs
+the inaccuracy introduced by using older data.
+Finally, we compute the accuracy of diagnosis as we increase the
+age of the data on which we trained the Bayesian network. We train
+a Bayesian network using AS clustering on data from hour 1 and
+test it on overlay failures observed during each of the hours from
+2 to 10. Figure 4 plots the accuracy of diagnosis over time. Average
+accuracy changes over time because the distribution of failures
+we observe using Planetseer varies from hour to hour, but overall
+diagnostic accuracy diminishes only slightly after nine hours, suggesting
+that the distribution of TCP failure probabilities remains
+relatively stationary over time.
+We also compare the false positive and false negative rates for
+each clustering method. The false positive rate is the fraction of
+functioning connections that are incorrectly diagnosed as having
+failed, while the false negative rate is the fraction of failed connections
+that are incorrectly diagnosed as functioning. Table 1 lists the
+false positive and false negative rates for each clustering method.
+5.3
+Analysis
+These experiments show that we can diagnose overlay connection
+failures knowing only the AS numbers of its TCP endpoints.
+309
+AS
+Country
+IP
+Baseline
+user/proxy false pos.
+0.174
+0.358
+0.426
+1.000
+user/proxy false neg.
+0.219
+0.050
+0.060
+0.000
+proxy/server false pos.
+0.219
+0.101
+0.265
+0.000
+proxy/server false neg.
+0.171
+0.128
+0.100
+1.000
+Table 1: Diagnosis error rates by type
+One reason our approach to diagnosis works is due to the heavy-tailed
+distribution of TCP connection failure probability. The majority
+of TCP failures occur among a small number of AS pairs.
+Therefore most CoDeeN connection failures involve one TCP connection
+with low failure probability and another TCP connection
+with high failure probability, so probabilistic inference produces
+the correct diagnosis. For example, we find that TCP connections
+from hosts in China to hosts in the USA tend to have a much
+higher probability of failure than connections within the USA. If
+an CoDeeN user in China accesses a proxy in the USA to retrieve
+content from a web server in the USA and experiences a failure,
+then it is very likely that the failure occurred on the connection between
+the user and the CoDeeN node. If the probability of failure
+for every pair of ASes were equal, then our probabilistic approach
+to diagnosis would not work as well.
+Another interesting result is that the accuracy of diagnosis diminishes
+relatively slowly over time, implying that the distribution
+of TCP failures in the Internet stays relatively stationary over time.
+This suggests that diagnostic agents can perform accurate diagnosis
+using inter-AS TCP failure probabilities without having to con-stantly
+collect the latest TCP failure data.
+CONCLUSION AND FUTURE WORK
+Our initial experimental results indicate that our passive probabilistic
+approach to diagnosing TCP overlay connection failures
+can provide useful diagnostic information. In this paper we show
+that Bayesian inference provides a useful framework for diagnosing
+two hop overlay connection failures on CoDeeN, but our approach
+can generalize to the diagnosis of other overlay connection
+failures as well. We view our approach to diagnosing TCP overlay
+connection failures as just one example of a more general probabilistic
+approach for Internet fault diagnosis. In this paper we show
+how to use inter-AS TCP failure probabilities to diagnose failures
+in overlay networks, but the technique we used to diagnose failures
+in CoDeeN can be extended to the diagnosis of other overlays as
+well. We can apply the knowledge we learned from Planetseer to
+diagnose other classes of network components and applications by
+adding new nodes and edges to the Bayesian network we use for
+diagnosis.
+In this paper we only considered diagnosis without using any additional
+evidence about a failure. Typically, however, when failures
+occur users may already know the status of certain network components
+and can perform diagnostic probes to collect additional evidence
+for diagnosing failures. We can improve the accuracy of our
+approach by adding variables and edges to the Bayesian network to
+take into account this information. For instance, if we know the IP
+paths that TCP connections traverse, we can incorporate evidence
+of IP link failures into the Bayesian network. We intend to explore
+how agents can incorporate such additional evidence into a
+Bayesian network to improve diagnostic accuracy.
+In future work we will also examine more accurate models for
+Internet fault diagnosis that take into account failures at both short
+and long time scales. In this paper we only evaluated our algorithm
+on ten hours of data from Planetseer; we would like to conduct additional
+experiments to more accurately determine the effectiveness
+of diagnosis using data from other time periods as well. In addition
+we would like to explore other clustering methods, including dy-namically
+choosing the prefix length on which to cluster based on
+how much data an agent has about TCP connections to a particular
+IP range.
+Finally, though our paper describes a centralized diagnosis approach
+, this approach can easily be adapted for distributed diagnosis
+. Knowledge of the overlay topology and the conditional probabilities
+in the CPTs can be distributed among multiple agents in
+the Internet, allowing different agents to collect failure data from
+different points in the network. We are currently developing such a
+distributed system for the diagnosis of TCP application failures in
+the Internet.
+REFERENCES
+[1] D. G. Andersen, H. Balakrishnan, M. F. Kaashoek, and
+R. Morris. Resilient overlay networks. In Proceedings of the
+18th ACM Symposium on Operating System Principles
+(SOSP), 2001.
+[2] B. Chun, D. Culler, T. Roscoe, A. Bavier, L. Peterson,
+M. Wawrzoniak, and M. Bowman. Planetlab: an overlay
+testbed for broad-coverage services. SIGCOMM Comput.
+Commun. Rev., 33(3):3≠12, 2003.
+[3] S. Guha and P. Francis. Characterization and measurement of
+tcp traversal through nats and firewalls. In Internet
+Measurement Conference 2005 (IMC '05), 2005.
+[4] S. Kandula, D. Katabi, and J.-P. Vasseur. Shrink: A Tool for
+Failure Diagnosis in IP Networks. In ACM SIGCOMM
+Workshop on mining network data (MineNet-05),
+Philadelphia, PA, August 2005.
+[5] U. Lerner, R. Parr, D. Koller, and G. Biswas. Bayesian fault
+detection and diagnosis in dynamic systems. In Proceedings
+of the Seventeenth National Conference on Artificial
+Intelligence (AAAI-00), pages 531≠537, Austin, Texas,
+August 2000.
+[6] A. S. M Steinder. Increasing robustness of fault localization
+through analysis of lost, spurious, and positive symptoms. In
+Proceedings of INFOCOM, 2002.
+[7] R. Mahajan, N. Spring, D. Wetherall, and T. Anderson.
+User-level internet path diagnosis. In Proceedings of ACM
+SOSP, 2003.
+[8] V. N. Padmanabhan, S. Ramabhadran, and J. Padhye.
+Netprofiler: Profiling wide-area networks using peer
+cooperation. In Proceedings of the Fourth International
+Workshop on Peer-to-Peer Systems (IPTPS), February 2005.
+[9] L. Wang, K. Park, R. Pang, V. Pai, and L. Peterson.
+Reliability and security in the codeen content distribution
+network. In Proceedings of the USENIX 2004 Annual
+Technical Conference, 2004.
+[10] A. Ward, P. Glynn, and K. Richardson. Internet service
+performance failure detection. SIGMETRICS Perform. Eval.
+Rev., 26(3):38≠43, 1998.
+[11] M. Zhang, C. Zhang, V. Pai, L. Peterson, and R. Wang.
+Planetseer: Internet path failure monitoring and
+characterization in wide-area services. In Proceedings of
+Sixth Symposium on Operating Systems Design and
+Implementation (OSDI '04), 2004.
+310
+","bayesian networks, fault diagnosis, passive diagnosis, planetseer, tcp overlay path diagnosis","codeen, bayesian networks, fault diagnosis, passive diagnosis, planetseer, tcp overlay path diagnosis, diagnosis "
+3,"Efficient Multi-way Text Categorization via Generalized Discriminant Analysis
+ABSTRACT
+Text categorization is an important research area and has been receiving
+much attention due to the growth of the on-line information
+and of Internet. Automated text categorization is generally cast as
+a multi-class classification problem. Much of previous work focused
+on binary document classification problems. Support vector
+machines (SVMs) excel in binary classification, but the elegant
+theory behind large-margin hyperplane cannot be easily extended
+to multi-class text classification. In addition, the training time and
+scaling are also important concerns. On the other hand, other techniques
+naturally extensible to handle multi-class classification are
+generally not as accurate as SVM. This paper presents a simple and
+efficient solution to multi-class text categorization. Classification
+problems are first formulated as optimization via discriminant analysis
+. Text categorization is then cast as the problem of finding coordinate
+transformations that reflects the inherent similarity from the
+data. While most of the previous approaches decompose a multiclass
+classification problem into multiple independent binary classification
+tasks, the proposed approach enables direct multi-class
+classification. By using Generalized Singular Value Decomposition
+(GSVD), a coordinate transformation that reflects the inherent class
+structure indicated by the generalized singular values is identified.
+Extensive experiments demonstrate the efficiency and effectiveness
+of the proposed approach.
+Categories and Subject Descriptors
+H.3 [Information Storage and Retrieval]: Information Search
+and Retrieval; I.2 [Artificial Intelligence]: Learning; I.5 [Pattern
+Recognition
+]: Applications
+
+General Terms
+Algorithms, Measurement, Performance, Experimentation, Verifi-cation
+£
+The current affiliation: Amazon.com, Inc.
+Permission to make digital or hard copies of all or part of this work for
+personal or classroom use is granted without fee provided that copies are
+not made or distributed for profit or commercial advantage and that copies
+bear this notice and the full citation on the first page. To copy otherwise, to
+republish, to post on servers or to redistribute to lists, requires prior specific
+permission and/or a fee.
+CIKM'03, November 3≠8, 2003, New Orleans, Louisiana, USA.
+Copyright 2003 ACM 1-58113-723-0/03/0011 ...
+$
+5.00.
+INTRODUCTION
+With the ever-increasing growth of the on-line information and
+the permeation of Internet into daily life, methods that assist users
+in organizing large volumes of documents are in huge demand.
+In particular, automatic text categorization has been extensively
+studied recently. This categorization problem is usually viewed
+as supervised learning, where the gaol is to assign predefined category
+labels to unlabeled documents based on the likelihood in-ferred
+from the training set of labeled documents. Numerous approaches
+have been applied, including Bayesian probabilistic approaches
+[20, 31], nearest neighbor [22, 19], neural networks [33],
+decision trees [2], inductive rule learning [4, 9], support vector machines
+[18, 14], Maximum Entropy [26], boosting [28], and linear
+discriminate projection [3] (see [34] for comparative studies of text
+categorization methods).
+Although document collections are likely to contain many different
+categories, most of the previous work was focused on binary
+document classification. One of the most effective binary classification
+techniques is the support vector machines (SVMs) [32]. It
+has been demonstrated that the method performs superbly in binary
+discriminative text classification [18, 34]. SVMs are accurate and
+robust, and can quickly adapt to test instances. However, the elegant
+theory behind the use of large-margin hyperplanes cannot be
+easily extended to multi-class text categorization problems. A number
+of techniques for reducing multi-class problems to binary problems
+have been proposed, including one-versus-the-rest method,
+pairwise comparison [16] and error-correcting output coding [8, 1].
+In these approaches, the original problems are decomposed into a
+collection of binary problems, where the assertions of the binary
+classifiers are integrated to produce the final output. In practice,
+which reduction method is best suited is problem-dependent, so it
+is a non-trivial task to select the decomposition method. Indeed,
+each reduction method has its own merits and limitations [1]. In
+addition, regardless of specific details, these reduction techniques
+do not appear to be well suited for text categorization tasks with
+a large number of categories, because training of a single, binary
+SVM requires O
+і
+n
+
+µ
+time for 1 7
+
+2 1 where n is the number
+of training data [17]. Thus, having to train many classifiers has
+a significant impact on the overall training time. Also, the use of
+multiple classifiers slows down prediction. Thus, despite its elegance
+and superiority, the use of SVM may not be best suited for
+multi-class document classification. However, there do not appear
+to exist many alternatives, since many other techniques that can
+be naturally extended to handle multi-class classification problems,
+317
+such as neural networks and decision trees, are not so accurate as
+SVMs [34, 35].
+In statistics pattern recognition literature, discriminant analysis
+approaches are well known to be able to learn discriminative
+feature transformations (see, e.g., [12]). For example, Fisher discriminant
+analysis [10] finds a discriminative feature transformation
+as eigenvectors associated with the largest eigenvalues of matrix
+T
+^
+
+
+1
+w
+^
+
+b
+, where ^
+
+w
+is the intra-class covariance matrix and
+^
+
+b
+is the inter-class covariance matrix
+1
+. Intuitively, T captures
+not only compactness of individual classes but separations among
+them. Thus, eigenvectors corresponding to the largest eigenvalues
+of T are likely to constitute a discriminative feature transform.
+However, for text categorization, ^
+
+w
+is usually singular owing to
+the large number of terms. Simply removing the null space of ^
+
+w
+would eliminate important discriminant information when the projections
+of ^
+
+b
+along those directions are not zeros [12]. This issue
+has stymied attempts to use traditional discriminant approaches in
+document analysis.
+In this paper we resolve this problem. We extend discriminant
+analysis and present a simple, efficient, but effective solution to
+text categorization. We propose a new optimization criterion for
+classification and cast text categorization as the problem of finding
+transformations to reflect the inherent similarity from the data. In
+this framework, given a document of unknown class membership,
+we compare the distance of the new document to the centroid of
+each category in the transformed space and assign it to the class
+having the smallest distance to it. We call this method Generalized
+Discriminant Analysis (GDA), since it uses generalized singular
+value decomposition to optimize transformation. We show that the
+transformation derived using
+GDA
+is equivalent to optimization
+via the trace or determinant ratios.
+GDA
+has several favorable properties: First, it is simple and can
+be programed in a few lines in MATLAB. Second, it is efficient.
+(Most of our experiments only took several seconds.) Third, the
+algorithm does not involve parameter tuning. Finally, and probably
+the most importantly, it is very accurate. We have conducted extensive
+experiments on various datasets to evaluate its performance.
+The rest of the paper is organized as follows: Section 2 reviews the
+related work on text categorization. Section 3 introduces our new
+criterion for discriminant analysis. Section 4 introduces the basics
+of generalized singular value decomposition and gives the solution
+of the optimization problem. Section 5 shows that the transformation
+derived using
+GDA
+can also be obtained by optimizing the
+trace or determinant ratios. Section 6 presents some illustrating examples
+. Section 7 shows experimental results. Finally, Section 8
+provides conclusions and discussions.
+RELATED WORK
+Text categorization algorithms can be roughly classified into two
+types: those algorithms that can be naturally extended to handle
+multi-class cases and those require decomposition into binary classification
+problems. The first consists of such algorithms as Naive
+Bayes [22, 19], neural networks [25, 33], K-Nearest Neighbors [22,
+19], Maximum Entropy [26] and decision trees. Naive Bayes uses
+the joint distributions of words and categorizes to estimate the probabilities
+that an input document belongs to each document class and
+1
+This is equivalent to using eigenvectors associated with the smallest
+eigenvalues of matrix T
+^
+
+
+1
+b
+^
+
+w
+. It indicates that traditional
+discriminant analysis requires the non-singularity of at least one covariance
+matrix. Since the rank of ^
+
+w
+is usually greater than that of
+^
+
+b
+, we will base our discussion on the eigenvalue-decomposition
+of T
+^
+
+
+1
+w
+^
+
+b
+.
+then selects the most probable class. K-Nearest Neighbor finds the
+k nearest neighbors among training documents and uses the categories
+of the k neighbors to determine the category of the test document
+. The underlying principle of maximum entropy is that without
+external knowledge, uniform distribution should be preferred.
+Based on this principle, it estimate the conditional distribution of
+the class label given a document.
+The reduction techniques that are used by the second group include
+one-versus-the-rest method [29], error-correcting output coding
+[8], pairwise comparison [16], and multi-class objective functions
+, where the first two have been applied to text categorization
+[34, 13].
+In the one-versus-the-rest method a classifier separating between
+from a class and the rest is trained for each class. Multi-class classification
+is carried out by integrating prediction of these individual
+classifiers with a strategy for resolving conflicts. The method is
+sometimes criticizes for solving asymmetric problems in a symmetrical
+manner and for not considering correlations between classes.
+Error-correcting output coding (ECOC) [8] partitions the original
+set of classes into two sets in many different ways. A binary
+classifier is trained for each partition. The partitions are carefully
+chosen so that the outputs of these classifiers assign a unique binary
+codeword for each class (with a large Hamming distance between
+any pair of them). The class of an input with unknown class membership
+is chosen by computing the outputs of the classifiers on
+that input and then finding the class with the codeword closest to
+the output codeword.
+Although SVMs are considered to be very effective in binary
+classification, its large training costs may make it unsuitable for
+multi-class classification with a large number of classes if the above
+decomposition techniques are applied. Also, the lack of a clear
+winner among the above techniques makes the reduction task complicated
+. Our
+GDA
+directly deals with multi-class classification
+and does not require reduction to binary classification problems.
+Other techniques for text categorization exist. Godbole et al.
+[14] propose a new multi-class classification technique that exploits
+the accuracy of SVMs and the speed of Naive Bayes. It uses a
+Naive Bayes classifier to compute a confusion matrix quickly. Then
+it uses this matrix to reduce both the number and the complexity
+of binary SVMs to be built. Chakrabarti et al. [3] propose a fast
+text classification technique that uses multiple linear projections. It
+first projects training instances to low-dimensional space and then
+builds decision tree classifiers on the projected spaces. Fragoudis
+et al. [11] propose a new algorithm that targets both feature and
+instance selection for text categorization.
+In summary, as pointed out in [34, 26], there is no obvious winner
+in multi-class classification techniques. For practical problems,
+the choice of approach will have to be made depending on the constraints
+, e.g., the desired accuracy level, the time available, and the
+nature of the problem.
+NEW CRITERION FOR DISCRIMINANT ANALYSIS
+Suppose the dataset D has m instances, d
+1
+d
+m
+, having p features
+each. Then D can be viewed as a subset of R
+p
+as well as
+a member of R
+m
+Ґ
+p
+. Suppose D has L classes, D
+1
+D
+L
+having
+m
+1
+m
+L
+instances, respectively, where m
+
+L
+i 1
+m
+i
+. For each i,
+1
+i
+L, let J
+i
+be the set of all j, 1
+j
+m, such that the j-th
+instance belongs to the i-th class, and let c
+і
+i
+µ
+be the centroid of the
+i-th class, i.e., the component-wise average of the m
+i
+vectors in the
+318
+class. Let c be the centroid of the entire dataset. The intra-class
+scatter matrix of D, ^
+
+w
+, is defined by
+^
+
+w
+L
+
+i 1
+
+j
+Њ
+J
+i
+і
+d
+j
+
+c
+і
+i
+µ
+µ
+T
+і
+d
+j
+
+c
+і
+i
+µ
+µ
+and its inter-class scatter matrix, ^
+
+b
+, is defined by
+^
+
+b
+L
+
+i 1
+
+j
+Њ
+J
+i
+і
+d
+j
+
+c
+µ
+T
+і
+d
+j
+
+c
+µ
+Let A
+w
+be the m
+Ґ
+p matrix constructed by stacking D
+1
+
+і
+e
+і
+1
+µ
+µ
+T
+c
+і
+1
+µ
+,
+, D
+L
+
+і
+e
+і
+L
+µ
+µ
+T
+c
+і
+L
+µ
+µ
+and let A
+b
+be the p
+Ґ
+m
+matrix whose columns are, from left to right,
+‘
+m
+1
+і
+c
+і
+1
+µ
+
+c
+µ
+T
+°
+°
+°
+‘
+m
+L
+і
+c
+і
+L
+µ
+
+c
+µ
+T
+. Then
+^
+
+w
+A
+w
+A
+T
+w
+and ^
+
+b
+A
+b
+A
+T
+b
+Although there are ways (such as Kernel tricks [24]) for utilizing
+non-linear transformation, we will focus on linear transformation
+. Given a linear transformation
+
+, the covariance matrices in
+the transformed space are
+і
+A
+b
+
+µ
+T
+і
+A
+b
+
+µ
+
+T
+A
+T
+b
+A
+b
+
+T
+^
+
+b
+
+and
+і
+A
+w
+
+µ
+T
+і
+A
+w
+
+µ
+
+T
+A
+T
+w
+A
+w
+
+T
+^
+
+w
+
+Fisher's linear discriminant analysis discriminates inter-class distance
+and intra-class distance by using their corresponding covariance
+matrices. The optimal projection can be obtained by solving
+the generalized eigenvalue problem:
+^
+
+b
+
+^
+
+w
+
+(1)
+If ^
+
+w
+is nonsingular,
+
+is given by the eigenvectors of matrix
+^
+
+
+1
+w
+^
+
+b
+. As we already pointed out, the approach fails if ^
+
+w
+is singular
+which is often the case in document classification
+2
+. Usually,
+this problem is overcome by using a nonsingular intermediate space
+of ^
+
+w
+obtained by removing the null space of ^
+
+w
+and then computing
+eigenvectors. However, the removal of the null space of ^
+
+w
+possibly eliminates some useful information because some of the
+most discriminant dimensions may be lost by the removal. In fact,
+the null space of ^
+
+w
+is guaranteed to contain useful discriminant
+information when the projections of ^
+
+b
+are not zeros along those
+directions. Thus, simple removal of the null space of ^
+
+w
+is not an
+effective resolution [12].
+Once the transformation
+
+has been determined, classification
+is performed in the transformed space based on a distance metrics,
+such as Euclidean distance
+d
+і
+x y
+µ
+÷
+
+i
+і
+x
+i
+
+y
+i
+µ
+2
+and cosine measure
+d
+і
+x y
+µ
+1
+
+
+i
+x
+i
+y
+i
+’
+
+i
+x
+2
+i
+’
+
+i
+y
+2
+i
+A new instance, z, it is classified to
+argmin
+k
+d
+і
+z
+
+ѓx
+k
+
+µ
+(2)
+where ѓx
+k
+is the centroid of k-th class.
+2
+In fact, ^
+
+w
+is nonsingular only if there are p
+Ј
+L samples. This is
+usually impractical.
+3.2
+The New Criterion
+We propose the use of the following criterion for discriminating
+inter-class and intra-class distances by inter-class and intra-class
+covariance matrices:
+min
+
+A
+b
+
+
+I
+n 2
+F
+Ј
+A
+w
+
+2
+F
+(3)
+where X
+F
+is the Frobenius norm of the matrix X , i.e.,
+’
+
+i j
+x
+2
+i j
+.
+The criterion does not involve the inverse of the intra-class matrix
+and is similar to Tikhonov regularization of least squares problems.
+Intuitively, the first term of (3) is used to minimize the difference
+between the projection of ѓx
+i
+
+ѓx in a new space and the i-th unit
+vector of the new space. The second term is used to minimize the
+intra-class covariance.
+The equation (3) can be rewritten as
+min
+
+
+
+
+
+A
+w
+A
+b
+
+
+0
+I
+n
+
+
+
+
+2
+F
+(4)
+and this is a least squares problem with the solution
+і
+A
+T
+w
+A
+w
+Ј
+A
+T
+b
+A
+b
+µ
+
+A
+T
+b
+(5)
+GENERALIZED SINGULAR VALUE DECOMPOSITION
+Here we will show how to use GSVD to compute efficiently the
+solution to the optimization problem formulated in Section 3 and
+show that the solution thus obtained is stable.
+4.1
+The Basics of GSVD
+Singular value decomposition (SVD) is a process of decomposing
+a rectangular matrix into three other matrices of a very special
+form. It can be viewed as a technique for deriving a set of uncor-related
+indexing variables or factors [6]. A Generalized Singular
+Value Decomposition (GSVD) is an SVD of a sequence of matrices
+. GSVD has played a significant role in signal processing and
+in signal identification and has been widely used in such problems
+as source separation, stochastic realization and generalized Gauss-Markov
+estimation.
+The diagonal form of GSVD, shown below, was first introduced
+in [21].
+T
+HEOREM
+1. (GSVD Diagonal Form
+[21]) If A
+Њ
+R
+m
+Ґ
+p
+,
+B
+Њ
+R
+n
+Ґ
+p
+, and rank
+і
+A
+T
+B
+T
+µ
+k, then there exist two orthogonal
+matrices, U
+Њ
+R
+m
+Ґ
+m
+and V
+Њ
+R
+n
+Ґ
+n
+, and a non-singular matrix,
+
+Њ
+R
+p
+Ґ
+p
+, such that
+U
+T
+0
+0
+V
+T
+A
+B
+X
+C
+S
+Ґ
+I
+k
+0
+£
+(6)
+where C and S are nonnegative diagonal and of dimension m
+Ґ
+k and n
+Ґ
+k, respectively, 1
+S
+11
+°
+°
+°
+S
+min
+і
+n k
+µ
+min
+і
+n k
+µ
+0, and
+C
+T
+C
+Ј
+S
+T
+S
+I
+k
+.
+The generalized singular values are defined to be the
+component-wise ratios of the diagonal entries of the two diagonal
+matrices. In signal processing, A is often the signal matrix and B is
+the noise matrix, in which case the generalized singular values are
+referred to as signal-noise ratios.
+4.2
+Stable Solution
+By plugging the GSVD matrices of A
+w
+and A
+b
+in (5), we have
+
+X
+I
+k
+0
+S
+T
+V
+T
+. Since V is orthogonal, we can drop it without
+319
+changing the squared distance. So, we have
+
+X
+I
+k
+0
+S
+T
+(7)
+This derivation of
+
+holds even if ^
+
+w
+is singular. Thus, by using
+GSVD to solve the new criterion, we can avoid removing null
+space, thereby keeping all the useful information. The degree of
+linear independence of the original data, rank
+і
+A
+T
+w
+A
+T
+b
+µ
+, is equal to
+k, Since
+
+Њ
+R
+p
+Ґ
+k
+, rank
+іі
+A
+w
+
+µ
+T
+і
+A
+b
+
+µ
+T
+µ
+, the degree of linear
+independence in the transformed space, is at most k.
+We now state a theorem that shows that the solution is stable.
+T
+HEOREM
+2. (GSVD relative perturbation bound [7]) Suppose
+A and B be matrices with the same number of columns and B
+is of full column rank. Let A
+A
+1
+D
+1
+and B
+B
+1
+D
+2
+such that D
+1
+and D
+2
+have full rank. Let E
+E
+1
+D
+1
+and F
+F
+1
+D
+2
+be perturbations
+of A and B, respectively, such that for all x there exist some
+
+1
+
+2
+1 for which it holds that
+E
+1
+x
+2
+
+1
+A
+1
+x
+2
+F
+1
+x
+2
+
+2
+B
+1
+x
+2
+Let
+
+i
+and ~
+
+i
+be the i-th generalized singular value of
+і
+A B
+µ
+and
+that of
+і
+A
+Ј
+E B
+Ј
+F
+µ
+, respectively. Then either
+
+i
+~
+
+i
+0 or
+
+i
+
+~
+
+i
+
+i
+
+1
+Ј
+
+2
+1
+
+
+2
+The above theorem gives a bound on the relative error of the
+generalized eigenvalues (C
+ii
+and S
+ii
+) if the difference between the
+estimated covariance matrices and the genuine covariance matrices
+is small. This guarantees that the relative error of
+
+is bounded
+by the relative error of estimated intra- and inter-class covariance
+matrices.
+GSVD also brings some favorable features, which might improve
+accuracy. In particular, computation of the cross products
+A
+T
+b
+A
+b
+and A
+T
+w
+A
+w
+, which causes roundoff errors, is not required.
+4.3
+The GDA Algorithm
+The pseudo codes of the training and prediction procedures are
+described as follows:
+Algorithm 1 Training procedure
+
+= Train (x's)
+Input: the training data x
+i
+'s
+Output: the transformation
+
+;
+begin
+1.
+Construct the matrices A
+w
+and A
+b
+;
+2.
+Perform GSVD on the matrix pair;
+3.
+Obtain
+
+as described in equation 7.
+4.
+Return
+
+;
+end
+Algorithm 2 Prediction Procedure T
+= Predict (
+
+, x)
+Input: the transformation
+
+generated by the training procedure;
+and a new instance x;
+Output: the label T of the new instance;
+begin
+1.
+Perform Prediction as in equation 2;
+2.
+Return T
+;
+end
+CONNECTIONS
+Here we show that the above transformation derived using our
+new criterion can also be obtained by optimizing the trace or determinant
+ratios.
+5.1
+Optimizing the determinant ratio
+Fisher's criterion is to maximize the ratio of the determinant of
+the inter-class scatter matrix of the projected samples to the determinant
+of the intra-class scatter matrix of the projected samples:
+J
+і
+
+µ
+
+T
+^
+
+b
+
+
+T
+^
+
+w
+
+(8)
+One way to overcome the requirements of non-singularity of
+Fisher's criterion is looking for solutions that simultaneously maximize
+
+T
+^
+
+b
+
+minimize
+
+T
+^
+
+w
+
+. Using GSVD, A
+b
+and A
+w
+are decomposed as A
+w
+UC I
+k
+0 X
+
+1
+and A
+b
+V S I
+k
+0 X
+
+1
+.
+To maximize
+J
+і
+
+µ
+,
+
+T
+^
+
+b
+
+should be increased while decreasing
+
+T
+^
+
+w
+
+. Let C
+Љ
+C I
+k
+0
+and S
+Љ
+S I
+k
+0
+. Then we have
+^
+
+b
+A
+T
+b
+A
+b
+X S
+Љ
+2
+X
+
+1
+and ^
+
+w
+A
+T
+w
+A
+w
+XC
+Љ
+2
+X
+
+1
+. This implies
+
+T
+^
+
+b
+
+
+T
+X S
+Љ
+2
+X
+
+1
+
+і
+S
+Љ
+X
+
+1
+
+µ
+2
+and
+
+T
+^
+
+w
+
+
+T
+XC
+Љ
+2
+X
+
+1
+
+і
+C
+Љ
+X
+
+1
+
+µ
+2
+Thus, the matrix
+
+satisfying X
+
+1
+
+I
+k
+0
+would simultaneously
+maximize
+
+T
+^
+
+b
+
+and minimize
+
+T
+^
+
+w
+
+(since the diagonal
+of S is decreasing). So, we have
+
+X
+I
+k
+0
+. In the case
+where we must weight the transformation with the generalized singular
+,
+
+X
+I
+k
+0
+S
+T
+is the transformation we want.
+5.2
+Optimizing the trace ratio
+The same transformation can also be obtained by optimizing the
+trace ratio. Using GSVD, we have
+trace
+і
+
+T
+^
+
+b
+
+µ
+trace
+і
+S
+Љ
+S
+Љ
+T
+X
+
+1
+
+T
+X
+
+T
+µ
+trace
+і
+S
+Љ
+S
+Љ
+T
+GG
+T
+µ
+k
+
+i 1
+S
+2
+ii
+g
+ii
+and
+trace
+і
+
+T
+^
+
+w
+
+µ
+trace
+і
+C
+Љ
+C
+Љ
+T
+X
+
+1
+
+T
+X
+
+T
+µ
+trace
+і
+C
+Љ
+C
+Љ
+T
+GG
+T
+µ
+k
+
+i 1
+C
+2
+ii
+g
+ii
+where G
+X
+
+1
+
+and g
+ii
+is the ii-th term of G. Since C
+T
+C
+Ј
+S
+T
+S
+I
+k
+, we have
+trace
+і
+
+T
+^
+
+b
+
+µ
+Ј
+trace
+і
+
+T
+^
+
+w
+
+µ
+k
+
+i 1
+S
+2
+ii
+g
+ii
+Ј
+k
+
+i 1
+C
+2
+ii
+g
+ii
+k
+
+i 1
+g
+ii
+If we force that trace
+і
+
+T
+^
+
+b
+
+µ
+1, the optimization is formulated
+as minimization of trace
+і
+
+T
+^
+
+w
+
+µ
+
+k
+i 1
+g
+ii
+
+1. Here g
+ii
+'s
+are diagonal elements of a positive semi-definite matrix, so they
+are nonnegative.
+Also, for all i, g
+ii
+0 implies that for all j
+320
+g
+i j
+g
+ji
+0.
+Note that GG
+T
+is a p
+Ґ
+p matrix.
+Since only
+the first k diagonal entries,
+g
+ii ki 1
+, appear in the formula for
+trace
+і
+
+T
+^
+
+w
+
+µ
+
+k
+i 1
+g
+ii
+
+1, the quantities of other m
+
+k diagonal
+entries do not affect the optimization. Thus, we may set all
+of these to 0, thereby obtaining
+
+X
+I
+k
+0
+. In the case when
+we want to weight the transformation with the generalized singular
+values, we obtain
+
+X
+I
+k
+0
+S
+T
+.
+TEXT CLASSIFICATION VIA GDA EX-AMPLES
+A well-known transformation method in information retrieval is
+Latent Semantic Indexing (LSI) [6], which applies Singular Value
+Decomposition (SVD) to the document-term matrix and computes
+eigenvectors having largest eigenvalues as the directions related to
+the dominant combinations of the terms occurring in the dataset
+(latent semantics). A transformation matrix constructed from these
+eigenvectors projects a document onto the latent semantic space.
+Although LSI has been proven extremely useful in information retrieval
+, it is not optimal for text categorization because LSI is com-pletely
+unsupervised. In other words, LSI deals with the data without
+paying any particular attention to the underlying class structure
+. It only aims at optimally transforming the original data into
+a lower dimensional space with respect to the mean squared error
+, which has nothing to do with the discrimination of the different
+classes. Our
+GDA
+approach possesses advantages of both
+discriminant analysis and of latent semantic analysis. By explic-itly
+taking the intra-class and inter-class covariance matrices into
+the optimization criterion,
+GDA
+deals directly with discrimination
+between classes. Furthermore, by employing GSVD to solve the
+optimization problem,
+GDA
+tries to identify the latent concepts
+indicated by the generalized singular values.
+To illustrate how well
+GDA
+can perform, we present here two
+examples. In the first example, we compare
+GDA
+against LDA and
+LSI. Figure 1 shows a small dataset consisting of nine phrases in
+three topics: user interaction, graph theory, and distributed systems.
+No.
+Class
+Phrase
+1
+1
+Human interface for user response
+2
+1
+A survey of user opinion of computer
+system response time
+3
+1
+Relation of user-perceived response
+time to error measurement
+4
+2
+The generation of random, binary,
+unordered trees
+5
+2
+The intersection graph of paths in trees
+6
+2
+Graph Minors IV: Widths of trees and
+well-quasi-ordering
+7
+3
+A survey of distributed shared memory system
+8
+3
+RADAR: A multi-user distributed system
+9
+3
+Management interface tools for
+distributed computer system
+Figure 1: Nine example sentences
+After removing words (terms) that occurs only once, we have the
+document-term matrix as shown in Figure 2.
+The first and second samples in each class are used for training
+.
+GDA
+, LDA, and LSI are run on the training data to obtain
+transformation matrices.
+Figure 3 shows the plot of the
+word
+\
+No.
+1
+2
+3
+4
+5
+6
+7
+8
+9
+a
+1
+1
+1
+computer
+1
+1
+distributed
+1
+1
+1
+for
+1
+1
+graph
+1
+1
+interface
+1
+1
+of
+2
+1
+1
+1
+1
+1
+response
+1
+1
+1
+survey
+1
+1
+system
+1
+1
+1
+1
+the
+1
+1
+time
+1
+1
+trees
+1
+1
+1
+user
+1
+1
+1
+1
+Figure 2: Document-term Matrix
+distances/similarities between document pairs in the transformed
+space using each of the three methods.
+(a)
+GDA
+(b) LDA
+(c) LSI
+Figure 3: Pairwise document similarity via
+GDA
+, LDA, and
+LSI. The darker the close is the more similar the documents
+are.
+GDA
+is a clear winner.
+The second example illustrates differences between
+GDA
+and
+LSI. Distinction among three newsgroups in 20NG are attempted
+by selecting from each newsgroup twenty training and twenty for
+testing. Figure 4 shows plots of the the sixty testing articles using
+the two dominant directions as the axes.
+GDA
+has clear separation
+while the LSI plot shows an L-shaped concentration of the
+data points. The confusion matrices of these methods are shown in
+Table 1.
+GDA
+clearly performed better than LSI.
+prediction
+prediction
+actual
+1
+2
+3
+actual
+1
+2
+3
+1
+20
+0
+0
+1
+20
+0
+0
+2
+0
+19
+1
+2
+0
+3
+17
+3
+0
+0
+0
+3
+7
+5
+8
+Table 1: The confusion matrices. Left:
+GDA
+. Right: LSI.
+EXPERIMENTS
+For our experiments we used a variety of datasets, most of which
+are frequently used in the information retrieval research. The range
+of the number of classes is from four to 105 and the range of the
+number of documents is from 476 to 20,000, which seem varied
+321
+-1.5
+-1
+-0.5
+0
+0.5
+1
+-1
+-0.8
+-0.6
+-0.4
+-0.2
+0
+0.2
+0.4
+0.6
+0.8
+1
+Group 1
+Group 2
+Group 3
+(a)
+GDA
+-0.07
+-0.06
+-0.05
+-0.04
+-0.03
+-0.02
+-0.01
+0
+0.01
+0.02
+0.03
+-0.05
+0
+0.05
+0.1
+0.15
+0.2
+0.25
+0.3
+Group 1
+Group 2
+Group 3
+(b) LSI
+Figure 4: Document plots. The three groups are separated sig-nificantly
+better with
+GDA
+than with LSI.
+enough to obtain good insights as to how
+GDA
+performs. Table 2
+summarizes the characteristics of the datasets.
+20Newsgroups
+The 20Newsgroups (20NG) dataset contains
+approximately 20,000 articles evenly divided among 20 Usenet
+newsgroups. The raw text size is 26MB. All words were stemmed
+using a porter stemming program, all HTML tags were skipped,
+and all header fields except subject and organization of the posted
+article were ignored.
+WebKB
+The WebKB dataset
+3
+contains Web pages collected
+from university computer science departments. There are approximately
+8,300 documents in the set and they are divided into seven
+categories: student, faculty, staff, course, project, department, and
+other. The raw text size of the dataset is 27MB. Among the seven
+categories, student, faculty, course, and project are the four most
+populous. The subset consisting only of these categories is also
+used here, which is called WebKB4. In neither of the datasets, we
+used stemming or stop lists.
+Industry
+Sector
+The
+Industry
+Section
+dataset
+4
+is
+based on the data made available by Market Guide, Inc.
+(www.marketguide.com). The set consists of company homepages
+that are categorized in a hierarchy of industry sectors, but we
+disregarded the hierarchy. There were 9,637 documents in the
+dataset, which were divided into 105 classes. We tokened the
+documents by skipping all MIME and HTML headers and using a
+standard stop list. We did not perform stemming.
+Reuters
+The Reuters-21578 Text Categorization Test Collection
+contains documents collected from the Reuters newswire in
+1987. It is a standard text categorization benchmark and contains
+135 categories. We used its subsets: one consisting of the ten most
+frequent categories, which we call Reuters-Top10, and the other
+consisting of documents associated with a single topic, which we
+call Reuters-2. Reuters-2 had approximately 9,000 documents and
+50 categories.
+TDT2
+TDT2 is the NIST Topic Detection and Tracking text
+corpus version 3.2 released in December 6, 1999 [30]. This corpus
+contains news data collected daily from nine news sources in
+two languages (American English and Mandarin Chinese), over a
+period of six months (January≠June in 1998). We used only the
+English news texts, which were collected from New York Times
+Newswire Service, Associated Press Worldstream Service, Cable
+News Network, Voice of America, American Broadcasting Company
+, and Public Radio International. The documents were manu-ally
+annotated using 96 target topics. We selected the documents
+having annotated topics and removed the brief texts. The resulting
+3
+Both
+20NG
+and
+WebKB
+are
+available
+at
+http://www-2
+.cs.cmu.edu/afs/cs/project/theo-11/www/wwkb.
+4
+Available at http://www.cs.cmu.edu/ TextLearning/datasets.html
+dataset contained 7,980 documents.
+K-dataset
+This dataset was obtained from the WebACE
+project [15]. It contained 2,340 documents consisting of news articles
+from Reuters News Service made available on the Web in October
+1997. These documents were divided into 20 classes. They
+were processed by eliminating stop words and HTML tags, stemming
+the remaining words using Porter's suffix-stripping algorithm.
+CSTR
+This is the dataset of the abstracts of technical reports
+published in the Department of Computer Science at the University
+of Rochester between 1991 and 2002
+5
+. The dataset contained 476
+abstracts, which were divided into four research areas: Symbolic-AI
+, Spatial-AI, Systems, and Theory. We processed the abstracts
+by removing stop words and applying stemming operations on the
+remaining words.
+Datasets
+# documents
+# class
+20NG
+20,000
+20
+WebKB4
+4,199
+4
+WebKB
+8,280
+7
+Industry Sector
+9,637
+105
+Reuters-Top10
+2,900
+10
+Reuters-2
+9,000
+50
+CSTR
+476
+4
+K-dataset
+2,340
+20
+TDT2
+7,980
+96
+Table 2: Data Sets Descriptions
+7.2
+Data Preprocessing
+In all experiments, we randomly chose 70% of the documents for
+training and assigned the rest for testing. It is suggested in [35] that
+information gain is effective for term removal and it can remove up
+to 90% or more of the unique terms without performance degrade.
+So, we first selected the top 1,000 words by information gain with
+class labels. The feature selection is done with the Rainbow package
+[23].
+Here we use classification accuracy for evaluation. Different
+measures, such as precision-recall graphs and F
+1
+measure [34],
+have been used in the literature. However, since the datasets used
+in our experiments are relatively balanced and single-labeled, and
+our goal in text categorization is to achieve low misclassification
+rates and high separation between different classes on a test set,
+we thought that accuracy is the best measure of performance. All
+of our experiments were carried out on a P4 2GHz machine with
+512M memory running Linux 2.4.9-31.
+7.3
+Experimental Results
+Now we present and discuss the experimental results. Here we
+compare
+GDA
+against Naive Bayes (NB for short), K-Nearest
+Neighbor (KNN for short), Maximum Entropy (ME for short),
+LDA, and SVM on the same datasets with the same training and
+testing data. Recall that the first three of the methods we compare
+against are commonly-used direct methods for multi-class classification
+(in the sense that they do not require reduction to binary
+classification problems). For experiments involving SVM we used
+SVMTorch [5]
+6
+, which uses the one-versus-the-rest decomposition.
+Table 3 and Figure 5 show performance comparisons.
+GDA
+outperformed all the other five methods on 20NG, WebKB4, WebKB
+and Industry Sector. SVM performed the best on Reuters-2,
+5
+The TRs are available at http://www.cs.rochester.edu/trs.
+6
+Download-able at http://old-www.idiap.ch/learning/SVMTorch.html.
+322
+K-dataset, and TDT2.
+GDA
+outperformed LDA on all the experiments
+, and the improvement was significant (more than 10%) when
+the sample size was relatively small (in the case of CSTR, Reuters-Top10
+, and K-dataset).
+On 20NG, the performance of
+GDA
+s 95 03%, which is approximately
+10% higher than that of NB, 6% higher than that of ME,
+and 4% higher than that of SVM. On the WebKB4 dataset,
+GDA
+beats NB by approximately 5%, and both ME and SVM by approximately
+2%. On the WebKB dataset,
+GDA
+beats NB by approximately
+16% and ME by 6%. The performance of
+GDA
+is about
+8% higher than that of NB and by 6% than that of ME on the Industry
+Sector. The results with
+GDA
+and with SVM are almost
+the same on WebKB, Industry Sector, Reuters-Top10, and CSTR.
+On Reuters-2, K-dataset, and TDT2, SVM performs slightly better
+than
+GDA
+by 3%. ME achieves the best results on the CSTR
+dataset while NB is the winner on Reuters-top10 in terms of performance
+On CSTR, the performance of
+GDA
+is 2% lower than that
+of NB and 4% lower than that of ME. On Reuters-Top10,
+GDA
+is beaten by NB by approximately 1%. In total, the performance
+of
+GDA
+is always either the winner or very close to the winner:
+it is ranked the first four times, ranked the second three times, and
+ranked the third in the remaining two. Although there is no single
+winner over all datasets,
+GDA
+seems to outperform the rest on
+most counts. We can say that
+GDA
+is a viable, competitive algorithm
+in text categorization.
+Datasets
+GDA
+NB
+KNN
+ME
+LDA
+SVM
+20NG
+95.03
+85.60
+50.70
+89.06
+93.90
+91.07
+WebKB4
+94.01
+85.13
+37.29
+91.93
+90.72
+92.04
+WebKB
+79.02
+61.01
+44.81
+71.30
+77.35
+78.89
+Industry Sector
+66.57
+56.32
+39.48
+58.84
+66.49
+65.96
+Reuters-Top10
+81.98
+83.33
+74.07
+81.65
+71.46
+81.13
+Reuters-2
+89.82
+87.88
+73.22
+88.56
+88.65
+92.43
+CSTR
+88.50
+90.85
+82.53
+92.39
+68.29
+88.71
+K-dataset
+88.44
+86.14
+58.26
+86.19
+77.69
+91.90
+TDT2
+90.54
+91.59
+86.63
+89.18
+88.41
+93.85
+Table 3: Performance comparisons. For KNN we set k to 30.
+0
+10
+20
+30
+40
+50
+60
+70
+80
+90
+100
+20N
+ewsg
+roup
+s
+Web
+KB
+4
+Web
+KB
+Ind
+ustr
+y S
+ecto
+r
+Reu
+ters
+-top
+10
+Reu
+ters
+-2
+URCS
+K-d
+atas
+et
+TDT
+2
+GDA
+NB
+KNN
+ME
+LDA
+SVM
+Figure 5: Performance Comparison
+GDA
+is also very efficient and most experiments are done in
+several seconds. Table 4 summarizes the running time for all the
+experiments of
+GDA
+and SVM. Figure 6 and Figure 7 present the
+comparisons of training and prediction time respectively. The time
+saving of
+GDA
+is very obvious. In summary, these experiments
+have shown that
+GDA
+provides an alternate choice for fast and
+efficient text categorization.
+GDA
+GDA
+SVM
+SVM
+Datasets
+Training
+Prediction
+Training
+Prediction
+20NG
+171.80
+6.86
+270.20
+64.28
+WebKB4
+63.4
+0.20
+114.67
+54.72
+WebKB
+94.64
+0.43
+1108.17
+103.03
+Industry Sector
+88.23
+6.45
+423.54
+79.82
+Reuters-Top10
+61.23
+0.15
+94.28
+18.65
+Reuters-2
+96.19
+1.13
+566.53
+85.10
+CSTR
+3.65
+0.02
+7.50
+2.77
+K-dataset
+62.88
+0.18
+84.56
+47.70
+TDT2
+21.69
+5.14
+89.91
+26.76
+Table 4: Time Table in seconds.
+0
+200
+400
+600
+800
+1000
+1200
+20N
+ewsg
+rou
+ps
+We
+bKB
+4
+We
+bKB
+Ind
+ustry
+Sect
+or
+Reu
+ters
+-top
+10
+Reu
+ters
+-2
+CST
+R
+K-d
+ata
+set
+TDT
+2
+Training
+Time
+GDA
+SVM
+Figure 6: Training Time Comparisons
+0
+20
+40
+60
+80
+100
+120
+20N
+ewsg
+rou
+ps
+We
+bKB
+4
+We
+bKB
+Ind
+ustry
+Sect
+or
+Reu
+ters
+-top
+10
+Reu
+ters
+-2
+CST
+R
+K-d
+ata
+set
+TDT
+2
+Prediction
+Time
+GDA
+SVM
+Figure 7: Prediction Time Comparisons
+DISCUSSIONS AND CONCLUSIONS
+In this paper, we presented
+GDA
+, a simple, efficient, and yet accurate
+, direct approach to multi-class text categorization.
+GDA
+utilizes
+GSVD to transform the original data into a new space, which
+could reflect the inherent similarities between classes based on a
+new optimization criterion. Extensive experiments clearly demonstrate
+its efficiency and effectiveness.
+Interestingly enough, although traditional discriminant approaches
+have been successfully applied in pattern recognition, little
+work has been reported on document analysis. As we mentioned
+earlier, this is partly because the intra-class covariance matrix is
+usually singular for document-term data and hence restrict the usage
+of discriminant. Our new criterion avoids the problem while
+still preserving the discriminative power of the covariance matrix.
+323
+Another big barrier to application of discriminant analysis in document
+classification is its large computation cost. As we know,
+traditional discriminant analysis requires a large amount of computation
+on matrix inversion, SVD, and eigenvalue-analysis. The
+costs of these operations are extremely large in document analysis
+because the matrices have thousands of dimension. Our approach
+makes use of effective feature selection via information gain, with
+which we can remove up to 90% or more of the unique terms without
+significant performance degrade [35]. One of our future plans
+is to explore how the performance correlates with different feature
+selection methods and the number of words selected. There are also
+other possible extensions such as using random projection to reduce
+the dimensionality before applying discriminant analysis [27].
+Acknowledgments
+This work is supported in part by NSF grants EIA-0080124, DUE-9980943
+, and EIA-0205061, and NIH grant P30-AG18254.
+REFERENCES
+[1] Allwein, E. L., Schapire, R. E., & Singer, Y. (2000). Reducing
+multiclass to binary: A unifying approach for margin
+classifiers. ICML-00 (pp. 9≠16).
+[2] Apte, C., Damerau, F., & Weiss, S. (1998). Text mining with
+decision rules and decision trees. Proceedings of the Workshop
+with Conference on Automated Learning and Discovery:
+Learning from text and the Web.
+[3] Chakrabarti, S., Roy, S., & Soundalgekar, M. V. (2002). Fast
+and accurate text classification via multiple linear discriminant
+projections. Proceedings of the 28th International Conference
+on Very Large Databases (pp. 658≠669).
+[4] Cohen, W. W., & Singer, Y. (1996). Context-sensitive learning
+methods for text categorization. Proceedings of the 19th Annual
+International ACM SIGIR Conference on Research and
+Development in Information (pp. 307≠315).
+[5] Collobert, R., & Bengio, S. (2001). SVMTorch: Support
+vector machines for large-scale regression problems. Journal of
+Machine Learning Research, 1, 143≠160.
+[6] Deerwester, S. C., Dumais, S. T., Landauer, T. K., Furnas,
+G. W., & Harshman, R. A. (1990). Indexing by latent semantic
+analysis. Journal of the American Society of Information
+Science, 41, 391≠407.
+[7] Demmel, J., & Veseliіc, K. (1992). Jacobi's method is more
+accurate than QP. SIAM Journal on Matrix Analysis and
+Applications, 13, 10≠19.
+[8] Dietterich, T. G., & Bakiri, G. (1995). Solving multiclass
+learning problems via error-correcting output codes. Journal of
+Artificial Intelligence Research, 2, 263≠286.
+[9] Dumais, S., Platt, J., Heckerman, D., & Sahami, M. (1998).
+Inductive learning algorithms and representations for text
+categorization. CIKM-98 (pp. 148≠155).
+[10] Fisher, R. (1936). The use of multiple measurements in
+taxonomic problems. Annals of Eugenics, 7, 179≠188.
+[11] Fragoudis, D., Meretakis, D., & Likothanassis, S. (2002).
+Integrating feature and instance selection for text classification.
+SIGKDD-02 (pp. 501≠506).
+[12] Fukunaga, K. (1990). Introduction to statistical pattern
+recognition. Academic Press.
+[13] Ghani, R. (2000). Using error-correcting codes for text
+classification. ICML-00 (pp. 303≠310).
+[14] Godbole, S., Sarawagi, S., & Chakrabarti, S. (2002). Scaling
+multi-class support vector machine using inter-class confusion.
+SIGKDD-02 (pp. 513≠518).
+[15] Han, E.-H., Boley, D., Gini, M., Gross, R., Hastings, K.,
+Karypis, G., Kumar, V., Mobasher, B., & Moore, J. (1998).
+WebACE: A web agent for document categorization and
+exploration. Agents-98 (pp. 408≠415).
+[16] Hastie, T., & Tibshirani, R. (1998). Classification by
+pairwise coupling. Advances in Neural Information Processing
+Systems. The MIT Press.
+[17] Joachims, T. (1998). Making large-scale support vector
+machine learning practical. In Advances in kernel methods:
+Support vector machines.
+[18] Joachims, T. (2001). A statistical learning model of text
+classification with support vector machines. SIGIR-01 (pp.
+128≠136).
+[19] Lam, W., & Ho., C. (1998). Using a generalized instance set
+for automatic text categorization. SIGIR-98 (pp. 81≠89).
+[20] Lewis, D. D. (1998). Naive (Bayes) at forty: The
+independence assumption in information retrieval. ECML-98.
+[21] Loan, C. V. (1976). Generalizing the singular value
+decomposition. SIAM J. Num. Anal., 13, 76≠83.
+[22] Masand, B., Linoff, G., & Waltz., D. (1992). Classifying
+news stories using memory based reasoning. SIGIR-92 (pp.
+59≠64).
+[23] McCallum, A. K. (1996). Bow: A toolkit for statistical
+language modeling, text retrieval, classification and clustering.
+http://www.cs.cmu.edu/ mccallum/bow.
+[24] Mika, S., R®atsch, G., Weston, J., Sch®olkopf, B., & M®uller,
+K.-R. (1999). Fisher discriminant analysis with kernels. Neural
+Networks for Signal Processing IX (pp. 41≠48). IEEE.
+[25] Ng, H. T., Goh, W. B., & Low, K. L. (1997). Feature
+selection, perceptron learning, and a usability case study for
+text categorization. Proceedings of the 20th Annual
+International ACM SIGIR Conference on Research and
+Development in Information (pp. 67≠73).
+[26] Nigam, K., Lafferty, J., & McCallum, A. (1999). Using
+maximum entropy for text classification. In IJCAI-99 Workshop
+on Machine Learning for Information Filtering (pp. 61≠67).
+[27] Papadimitriou, C. H., Tamaki, H., Raghavan, P., & Vempala,
+S. (1998). Latent semantic indexing: A probabilistic analysis.
+Proceedings of the Symposium on Principles of Database
+Systems (pp. 159≠168).
+[28] Schapire, R. E., & Singer, Y. (2000). Boostexter: A
+boosting-based system for text categorization. Machine
+Learning, 39, 135≠168.
+[29] Scholkopf, B., & J.Smola, A. (2002). Learning with kernels.
+MIT Press.
+[30] TDT2 (1998). Nist topic detection and tracking corpus.
+http://www.nist.gove/speech/tests/tdt/tdt98/index.htm.
+[31] Tzeras, K., & Hartmann, S. (1993). Automatic indexing
+based on Bayesian inference networks. SIGIR-93 (pp. 22≠34).
+[32] Vapnik, V. N. (1998). Statistical learning theory. Wiley, New
+York.
+[33] Wiener, E. D., Pedersen, J. O., & Weigend, A. S. (1995). A
+neural network approach to topic spotting. 4th Annual
+Symposium on Document Analysis and Information Retrieval
+(pp. 317≠332).
+[34] Yang, Y., & Liu, X. (1999). A re-examination of text
+categorization methods. SIGIR-99 (pp. 42≠49).
+[35] Yang, Y., & Pederson, J. O. (1997). A comparative study on
+feature selection in text categorization. ICML-97 (pp. 412≠420).
+324
+","multi-class text categorization, gsvd, discriminant analysis","lsi, multi-class text categorization, gsvd, discriminant analysis"
